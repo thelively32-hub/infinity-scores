@@ -193,8 +193,8 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
 <div class="screen" id="s-report">
   <div class="report-hdr" id="report-hdr"></div>
   <div class="season-tabs">
-    <div class="stab on" data-s="2025">TEMPORADA 2025</div>
-    <div class="stab" data-s="2026">2026 ★ LIVE</div>
+    <div class="stab" data-s="2025">TEMPORADA 2025</div>
+    <div class="stab on" data-s="2026">2026 ★ LIVE</div>
   </div>
   <div id="report-content"><div class="loading">Cargando stats</div></div>
   <div style="height:30px"></div>
@@ -404,7 +404,7 @@ async function openTeam(id){
 // REPORT
 function openReport(person,isManager,date){
   if(typeof person==='string')person=JSON.parse(person);
-  curPerson=person;curIsManager=isManager;reportDate=date||curDate;curSeason=2025;
+  curPerson=person;curIsManager=isManager;reportDate=date||curDate;curSeason=2026;
 
   const cv=vib(person.birth_date,reportDate);
   const dv=person.destiny_number||dest(person.birth_date);
@@ -428,7 +428,7 @@ function openReport(person,isManager,date){
     </div>`;
 
   document.querySelectorAll('.stab[data-s]').forEach(t=>{
-    t.classList.toggle('on',t.dataset.s==='2025');
+    t.classList.toggle('on',t.dataset.s==='2026');
     t.onclick=()=>{
       document.querySelectorAll('.stab[data-s]').forEach(x=>x.classList.remove('on'));
       t.classList.add('on');curSeason=parseInt(t.dataset.s);
@@ -436,7 +436,7 @@ function openReport(person,isManager,date){
     };
   });
 
-  loadReport(person,isManager,2025,reportDate);
+  loadReport(person,isManager,2026,reportDate);
   show('report');
 }
 
