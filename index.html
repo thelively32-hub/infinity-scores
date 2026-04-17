@@ -371,20 +371,26 @@ let teamVibStats2025=null;
 let teamVibStats2026=null;
 let cachedPicks=null; // cache picks so we don't reload
 let currentPicksSection='over';
+let prevScreen='home'; // track where to go back from report
 
 // ── TOPBAR / NAV ──────────────────────────────────────────
 document.getElementById('back-btn').onclick=()=>{
   const cur=document.querySelector('.screen.active').id;
   if(cur==='s-teams'){show('home');return;}
-  else if(cur==='s-team')show('teams');
-  else if(cur==='s-report'||cur==='s-vs')show('team');
+  else if(cur==='s-team'){show('teams');return;}
+  else if(cur==='s-report'||cur==='s-vs'){
+    // If came from picks, go back to home; if from team, go back to team
+    if(prevScreen==='picks'){show('home');return;}
+    else{show('team');return;}
+  }
 };
 
-function show(id){
+function show(id, from=null){
+  if(from) prevScreen=from;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s-'+id).classList.add('active');
   const bb=document.getElementById('back-btn');
-  (id==='home'||id==='teams')?bb.classList.remove('show'):bb.classList.add('show');
+  (id==='home')?bb.classList.remove('show'):bb.classList.add('show');
   window.scrollTo(0,0);
 }
 
@@ -511,10 +517,9 @@ function renderPicks(results,section){
 }
 
 async function openTeamThenPlayer(teamId,player){
-  // Set curTeam without showing team screen
   curTeam=allTeams.find(t=>t.id===teamId);
   if(!curTeam)return;
-  // Go directly to report
+  prevScreen='picks';
   openReport(player,false,today());
 }
 
@@ -775,6 +780,7 @@ function openReport(person,isManager,date){
     };
   });
   loadReport(person,isManager,2026,reportDate);
+  if(prevScreen!=='picks') prevScreen='team';
   show('report');
 }
 
@@ -985,8 +991,7 @@ async function loadVS(){
 }
 
 function showTeams(){
-  show('teams');
-  document.getElementById('back-btn').classList.add('show');
+  show('teams','home');
   renderTeams();
 }
 
