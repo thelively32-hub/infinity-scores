@@ -1,0 +1,15 @@
+_backend_ref/
+memory/
+.emergent/
+node_modules/
+.env
+.DS_Store
+-e 
+# Environment and credential files
+.env
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
