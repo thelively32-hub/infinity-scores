@@ -232,6 +232,10 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
     <select class="vs-select" id="vs-select"><option value="">— Selecciona oponente —</option></select>
     <button class="vs-go" onclick="loadVS()">VER</button>
   </div>
+  <div style="display:flex;gap:8px;padding:10px 16px;border-bottom:0.5px solid var(--br2)">
+    <div class="stab on" id="vs-tab-2025" onclick="setVSSeason(2025)">2025</div>
+    <div class="stab" id="vs-tab-2026" onclick="setVSSeason(2026)">2026 ★ LIVE</div>
+  </div>
   <div id="vs-content"><div class="loading" style="padding:20px">Selecciona un equipo oponente</div></div>
   <div style="height:30px"></div>
 </div>
@@ -279,6 +283,7 @@ let curTeam=null;
 let curPerson=null;
 let curIsManager=false;
 let curSeason=2026;
+let curVSSeason=2025;
 let reportDate=today();
 let teamVibStats=null; // cached team vib stats
 
@@ -683,7 +688,7 @@ async function loadVS(){
   const container=document.getElementById('vs-content');
   container.innerHTML='<div class="loading">Cargando historial</div>';
   try{
-    const vsSeason=curSeason===2026?2025:curSeason;
+    const vsSeason=curVSSeason;
     const r=await fetch(`${API}/analysis/vs?teamA=${curTeam.id}&teamB=${oppId}&season=${vsSeason}`);
     const d=await r.json();
     if(d.error)throw new Error(d.error);
@@ -730,6 +735,14 @@ async function loadVS(){
   }catch(e){
     container.innerHTML=`<div class="err">Error: ${e.message}</div>`;
   }
+}
+
+function setVSSeason(s){
+  curVSSeason=s;
+  document.getElementById('vs-tab-2025').classList.toggle('on',s===2025);
+  document.getElementById('vs-tab-2026').classList.toggle('on',s===2026);
+  const oppId=document.getElementById('vs-select').value;
+  if(oppId) loadVS();
 }
 
 init();
