@@ -523,46 +523,58 @@ async function init(){
   },2200);
 }
 
-// ── TOP PICKS ─────────────────────────────────────────────
+// ── TOP PICKS (uses backend /api/today) ──────────────────
+let allPlayersMap=null;
 async function loadTopPicks(){
   if(cachedPicks){renderPicks(cachedPicks,currentPicksSection);return;}
-  document.getElementById('picks-content').innerHTML='<div class="picks-loading">Calculando picks del día…<br><small style="opacity:.5">Analizando 150 jugadores…</small></div>';
-  if(!allTeams.length){setTimeout(loadTopPicks,1000);return;}
+  document.getElementById('picks-content').innerHTML='<div class="picks-loading">Calculando picks del día…<br><small style="opacity:.5">Analizando jugadores MLB…</small></div>';
 
-  const results=[];
+  try{
+    // Fetch today's picks and all players map in parallel
+    const [tRes,pRes]=await Promise.all([
+      fetch(`${API}/today`),
+      fetch(`${API}/players`)
+    ]);
+    const d=await tRes.json();
+    const players=await pRes.json();
+    if(d.error)throw new Error(d.error);
 
-  // Process teams in parallel batches of 5
-  const batches=[];
-  for(let i=0;i<allTeams.length;i+=5) batches.push(allTeams.slice(i,i+5));
+    // Build player ID lookup for enrichment (mlb_id, birth_date)
+    allPlayersMap={};
+    players.forEach(p=>{allPlayersMap[p.id]=p;});
 
-  for(const batch of batches){
-    await Promise.all(batch.map(async team=>{
-      try{
-        const pRes=await fetch(`${API}/players?teamId=${team.id}`);
-        const players=await pRes.json();
-        await Promise.all(players.map(async p=>{
-          try{
-            const vibToday=vib(p.birth_date,today());
-            const isPitcher=['SP','RP','P'].includes(p.position||'');
-            const aRes=await fetch(`${API}/analysis/player?playerId=${p.id}&season=2025`);
-            const aData=await aRes.json();
-            if(aData.error||!aData.stats)return;
-            const pred=calcPrediction(aData.stats,vibToday,isPitcher);
-            if(pred.label==='SIN DATOS'||pred.label==='POCOS DATOS')return;
-            results.push({
-              id:p.id, name:p.name, position:p.position,
-              teamId:team.id, teamName:team.name, abbr:team.abbr,
-              colors:team.colors, destinyNumber:p.destiny_number||dest(p.birth_date),
-              vibToday, isPitcher, ...pred, player:p, team,
-            });
-          }catch(e){}
-        }));
-      }catch(e){}
-    }));
+    // Map backend response to frontend format
+    const mapPick=(p,isOver)=>{
+      const full=allPlayersMap[p.id]||{};
+      return{
+        id:p.id, name:p.name, position:p.position,
+        teamId:p.teamId, teamName:p.teamName, abbr:p.abbr,
+        colors:p.colors,
+        destinyNumber:p.destinyNumber,
+        vibToday:p.vibrationToday,
+        isPitcher:p.isPitcher,
+        level:isOver?'high':'low',
+        label:isOver?'HIGH PERFORMANCE':'LOW PERFORMANCE',
+        pct:p.score,
+        player:{
+          id:p.id,name:p.name,position:p.position,
+          birth_date:full.birth_date,
+          destiny_number:p.destinyNumber,
+          mlb_id:full.mlb_id,
+          team_id:p.teamId,
+        },
+      };
+    };
+
+    const results=[
+      ...(d.over||[]).map(p=>mapPick(p,true)),
+      ...(d.under||[]).map(p=>mapPick(p,false)),
+    ];
+    cachedPicks=results;
+    renderPicks(results,currentPicksSection);
+  }catch(e){
+    document.getElementById('picks-content').innerHTML=`<div class="err">Error cargando picks: ${e.message}</div>`;
   }
-
-  cachedPicks=results;
-  renderPicks(results,currentPicksSection);
 }
 
 function showPicksSection(section,el){
