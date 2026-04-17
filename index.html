@@ -762,10 +762,38 @@ function selectLeague(league){
   if(league!=='mlb'){showToast(`${league.toUpperCase()} · PRONTO`);return;}
   prevScreen='leagues';
   show('home','leagues');
-  // Load picks + accuracy (only on first MLB entry)
+  // Load picks + accuracy + solar/lunar + today's games
   loadTopPicks();
   loadAccuracy();
   loadSolarLunar();
+  loadTodaySchedule();
+}
+
+// ── TODAY'S SCHEDULE ──────────────────────────────────────
+let todayGames=null;
+async function loadTodaySchedule(){
+  try{
+    const r=await fetch(`${API}/schedule?date=${today()}`);
+    const d=await r.json();
+    todayGames=d;
+    // Show games count in home vib area
+    const uv=vibDay(today());
+    document.getElementById('home-vib').innerHTML=`
+      <div class="home-vib-row">
+        <div class="home-vib-num" style="color:${VC[uv]}">${uv}</div>
+        <div class="home-vib-info">
+          <div class="home-vib-label">VIBRACIÓN UNIVERSAL HOY</div>
+          <div class="home-vib-meaning">${VM[uv]}</div>
+          <div class="home-vib-date">${fmtLong(today())}</div>
+        </div>
+        <div style="text-align:right;margin-left:auto">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;color:var(--ac)">${d.totalGames||0}</div>
+          <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;margin-top:2px">JUEGOS HOY</div>
+        </div>
+      </div>`;
+  }catch(e){
+    console.error('schedule error',e);
+  }
 }
 
 // ── TOP PICKS (uses backend /api/today) ──────────────────
@@ -830,7 +858,8 @@ let cachedSolar=null, cachedLunar=null;
 async function loadSolarLunar(){
   if(cachedSolar&&cachedLunar)return;
   try{
-    const r=await fetch(`${API}/players`);
+    // Only fetch players whose team plays TODAY
+    const r=await fetch(`${API}/players?playingDate=${today()}`);
     const players=await r.json();
     const t=today();
     const solar=[],lunar=[];
@@ -841,10 +870,9 @@ async function loadSolarLunar(){
       if(v===1)solar.push(item);
       else if(v===9)lunar.push(item);
     });
-    // Enrich with team info
-    const teamMap={};allTeams.forEach(t=>teamMap[t.id]=t);
-    solar.forEach(p=>{const t=teamMap[p.team_id];p.teamName=t?.name||p.team_id;p.abbr=t?.abbr;p.colors=t?.colors;});
-    lunar.forEach(p=>{const t=teamMap[p.team_id];p.teamName=t?.name||p.team_id;p.abbr=t?.abbr;p.colors=t?.colors;});
+    // Enrich with team info (team_name and abbr are already on the player from join)
+    solar.forEach(p=>{p.teamName=p.team_name||p.team_id;p.abbr=p.team_abbr;});
+    lunar.forEach(p=>{p.teamName=p.team_name||p.team_id;p.abbr=p.team_abbr;});
     // Sort by team name
     solar.sort((a,b)=>(a.teamName||'').localeCompare(b.teamName||''));
     lunar.sort((a,b)=>(a.teamName||'').localeCompare(b.teamName||''));
@@ -870,6 +898,9 @@ function renderSolarLunar(kind){
   const bgColor=isSolar?'rgba(251,191,36,0.1)':'rgba(91,143,232,0.1)';
 
   if(!list.length){
+    const msg=todayGames&&todayGames.totalGames===0
+      ? 'No hay juegos programados hoy en MLB'
+      : `Ningún jugador de los equipos que juegan hoy tiene esta vibración`;
     document.getElementById('picks-content').innerHTML=`
       <div class="sl-section">
         <div class="sl-header ${kind}">
@@ -877,7 +908,7 @@ function renderSolarLunar(kind){
           <div><div class="sl-title ${kind}">${title}</div><div class="sl-sub">${subtitle}</div></div>
           <div class="sl-count ${kind}">0</div>
         </div>
-        <div class="sl-empty">Ningún jugador tiene esta vibración hoy</div>
+        <div class="sl-empty">${msg}</div>
       </div>`;
     return;
   }
@@ -888,7 +919,7 @@ function renderSolarLunar(kind){
       <div style="flex:1"><div class="sl-title ${kind}">${title}</div><div class="sl-sub">${subtitle}</div></div>
       <div class="sl-count ${kind}">${list.length}</div>
     </div>
-    <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;padding:0 2px 8px">${list.length} JUGADORES CON ${icon} VIB ${isSolar?'1':'9'} HOY — LAS VIBRACIONES MÁS PODEROSAS</div>
+    <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;padding:0 2px 8px">${list.length} JUGADORES ACTIVOS CON ${icon} VIB ${isSolar?'1':'9'} HOY · SOLO EQUIPOS EN JUEGO</div>
     ${list.map(p=>{
       const pd=p.destinyNumber;
       return`<div class="player-row" onclick='handleSolarLunarClick(${JSON.stringify(p).replace(/'/g,"&apos;")})' style="margin:0 0 7px">
