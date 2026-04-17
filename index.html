@@ -511,7 +511,10 @@ function renderPicks(results,section){
 }
 
 async function openTeamThenPlayer(teamId,player){
-  await openTeam(teamId);
+  // Set curTeam without showing team screen
+  curTeam=allTeams.find(t=>t.id===teamId);
+  if(!curTeam)return;
+  // Go directly to report
   openReport(player,false,today());
 }
 
