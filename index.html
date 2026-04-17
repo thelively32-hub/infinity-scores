@@ -15,8 +15,8 @@
   --win:#22c55e;--loss:#a855f7;--r:12px;
 }
 html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM Sans',sans-serif;max-width:480px;margin:0 auto}
-.screen{display:none}.screen.active{display:block;animation:fi .18s ease}
-@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.screen{display:none}.screen.active{display:block;animation:fi .2s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 /* TOPBAR */
 .topbar{display:flex;align-items:center;padding:10px 16px;border-bottom:0.5px solid var(--br2);min-height:52px;position:sticky;top:0;background:var(--ink);z-index:10;gap:10px}
@@ -28,17 +28,44 @@ html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM
 .topbar-vib{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1}
 .topbar-date{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace}
 
+/* HOME - TOP PICKS */
+.home-vib{padding:20px 16px;background:linear-gradient(180deg,rgba(34,197,94,0.05) 0%,transparent 100%);border-bottom:0.5px solid var(--br2)}
+.home-vib-row{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.home-vib-num{font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1}
+.home-vib-info .home-vib-label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:2px}
+.home-vib-info .home-vib-meaning{font-size:15px;color:var(--tx);margin-top:4px;line-height:1.4}
+.home-vib-info .home-vib-date{font-size:11px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:4px}
+.picks-section{padding:12px 16px 6px}
+.picks-title{font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.picks-title .badge{font-size:9px;padding:2px 8px;border-radius:20px;font-family:'DM Mono',monospace}
+.over-badge{background:rgba(34,197,94,0.15);color:var(--win);border:0.5px solid var(--win)}
+.under-badge{background:rgba(168,85,247,0.15);color:var(--loss);border:0.5px solid var(--loss)}
+.pick-card{background:var(--s2);border-radius:10px;padding:12px 14px;margin:0 0 8px;display:flex;align-items:center;gap:10px;border:0.5px solid var(--br2);transition:all .2s}
+.pick-card.hot{border-color:rgba(34,197,94,0.3);box-shadow:0 0 12px rgba(34,197,94,0.08)}
+.pick-card.cold{border-color:rgba(168,85,247,0.3);box-shadow:0 0 12px rgba(168,85,247,0.08)}
+.pick-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;flex-shrink:0}
+.pick-name{font-size:13px;font-weight:500;color:var(--tx)}
+.pick-team{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px}
+.pick-right{margin-left:auto;text-align:right}
+.pick-pct{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1}
+.pick-label{font-size:9px;font-family:'DM Mono',monospace;margin-top:2px}
+.pick-vib{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;flex-shrink:0}
+.picks-loading{text-align:center;padding:30px;color:var(--mu);font-size:11px;font-family:'DM Mono',monospace}
+
+/* NAV TABS */
+.nav-tabs{display:flex;border-bottom:0.5px solid var(--br2);background:var(--s1)}
+.nav-tab{flex:1;padding:10px 4px;text-align:center;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:1px;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.nav-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+
 /* TEAMS */
-.teams-header{padding:12px 14px;background:var(--s2);border-bottom:0.5px solid var(--br2);display:flex;align-items:center;gap:10px}
+.teams-header{padding:10px 14px;background:var(--s2);border-bottom:0.5px solid var(--br2);display:flex;align-items:center;gap:10px}
 .league-badge{background:rgba(232,24,40,0.15);border:0.5px solid rgba(232,24,40,0.3);color:#E81828;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;padding:4px 10px;border-radius:20px}
-.tvi-label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px}
-.tvi-meaning{font-size:11px;margin-top:1px}
 .search-wrap{padding:10px 14px;border-bottom:0.5px solid var(--br2)}
 .search-inp{width:100%;background:var(--s2);border:0.5px solid var(--br2);color:var(--tx);padding:9px 14px;border-radius:8px;font-size:14px}
 .search-inp::placeholder{color:var(--mu)}
 .teams-list{padding:8px 12px;display:flex;flex-direction:column;gap:7px}
-.team-row{background:var(--s2);border:0.5px solid var(--br2);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
-.team-row:hover,.team-row:active{border-color:var(--br)}
+.team-row{background:var(--s2);border:0.5px solid var(--br2);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .15s}
+.team-row:hover,.team-row:active{border-color:var(--br);transform:translateX(2px)}
 .team-info{flex:1;min-width:0}
 .team-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .team-div{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px}
@@ -47,63 +74,62 @@ html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM
 /* TEAM DETAIL */
 .team-hero{padding:16px;border-bottom:0.5px solid var(--br2)}
 .team-hero-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.hero-logo{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.hero-logo img{width:46px;height:46px;object-fit:contain}
 .team-hero-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--gold-l)}
 .team-hero-div{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px}
+.best-worst-row{display:flex;gap:8px;margin-top:10px}
+.bw-chip{flex:1;padding:8px 10px;border-radius:8px;text-align:center}
+.bw-chip-label{font-size:8px;font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:4px}
+.bw-chip-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.bw-chip-sub{font-size:9px;font-family:'DM Mono',monospace;margin-top:2px}
 
-/* TODAY VIBRATION CARD */
-.today-vib-card{background:var(--s1);border:0.5px solid var(--br);border-radius:12px;padding:14px;margin-bottom:0}
+/* TODAY VIB CARD */
+.sec-label{font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:2px;padding:14px 16px 8px}
+.today-vib-card{background:var(--s1);border:0.5px solid var(--br);border-radius:12px;padding:14px;margin:0 12px 10px}
 .tvc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .tvc-num{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1}
-.tvc-info .tvc-label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px}
-.tvc-info .tvc-meaning{font-size:13px;color:var(--tx);margin-top:3px}
+.tvc-label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px}
+.tvc-meaning{font-size:13px;color:var(--tx);margin-top:3px}
 .tvc-record{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.tvc-wl{font-family:'Bebas Neue',sans-serif;font-size:28px}
-.tvc-pct{font-size:13px;color:var(--mu);font-family:'DM Mono',monospace}
-/* WIN BAR */
-.win-bar-wrap{border-radius:6px;overflow:hidden;height:10px;background:rgba(168,85,247,0.3);margin-bottom:6px}
-.win-bar-fill{height:100%;border-radius:6px;background:var(--win);transition:width .6s ease}
+.tvc-wl{font-family:'Bebas Neue',sans-serif;font-size:26px}
+.tvc-pct{font-size:12px;color:var(--mu);font-family:'DM Mono',monospace}
+.win-bar-wrap{border-radius:6px;overflow:hidden;height:8px;background:rgba(168,85,247,0.25);margin-bottom:5px}
+.win-bar-fill{height:100%;border-radius:6px;transition:width .7s ease}
 .win-bar-label{display:flex;justify-content:space-between;font-size:10px;font-family:'DM Mono',monospace}
+.season-divider{border-top:0.5px solid var(--br2);margin:10px 0;padding-top:10px}
+.season-tag{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 
 /* VIB TABS */
-.sec-label{font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:2px;padding:14px 16px 8px}
-.vib-tabs-wrap{padding:0 12px 12px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.vib-tabs-wrap{padding:0 12px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .vib-tabs-wrap::-webkit-scrollbar{display:none}
 .vib-tab{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;cursor:pointer;border:1.5px solid transparent;flex-shrink:0;transition:all .15s}
 .vib-tab.active{border-color:#fff;transform:scale(1.15)}
-.vib-detail-card{margin:0 12px 12px;background:var(--s2);border:0.5px solid var(--br2);border-radius:12px;padding:14px}
-.vdc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.vdc-num{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1}
-.vdc-meaning{font-size:12px;color:var(--mu);margin-top:2px}
-.vdc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.vdc-stat{background:var(--s1);border-radius:8px;padding:10px;text-align:center}
-.vdc-stat-val{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1}
-.vdc-stat-label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;margin-top:2px}
 
 /* PERSON CARD */
-.person-card{margin:0 12px 8px;background:var(--s2);border:0.5px solid var(--br2);border-radius:var(--r);overflow:hidden;transition:border-color .15s}
+.person-card{margin:0 12px 8px;background:var(--s2);border:0.5px solid var(--br2);border-radius:var(--r);overflow:hidden;transition:all .15s}
 .person-card:hover{border-color:var(--br)}
 .pc-top{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
 .pc-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;flex-shrink:0}
 .pc-name{font-size:15px;font-weight:500}
 .pc-meta{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:3px}
-.pc-vib-today{margin-top:4px;font-size:11px;color:var(--mu)}
-.pc-right{margin-left:auto;text-align:center;flex-shrink:0}
-.dest-chip{background:var(--s1);border:0.5px solid var(--br);border-radius:8px;padding:6px 10px}
-.dest-chip-label{font-size:8px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px}
-.dest-chip-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1.1}
 .pc-footer{padding:10px 14px;border-top:0.5px solid var(--br2);display:flex;gap:8px}
 .act-btn{flex:1;padding:8px 4px;border-radius:8px;border:0.5px solid var(--br);background:transparent;color:var(--gold);font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;text-align:center;transition:all .15s}
 .act-btn:hover{background:rgba(201,168,76,0.1)}
 .act-btn.primary{background:var(--gold);color:#000;border-color:var(--gold);font-weight:600}
+.dest-chip{background:var(--s1);border:0.5px solid var(--br);border-radius:8px;padding:6px 10px;text-align:center}
+.dest-chip-label{font-size:8px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px}
+.dest-chip-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1.1}
 
 /* PLAYER ROW */
-.player-row{margin:0 12px 7px;background:var(--s2);border:0.5px solid var(--br2);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.player-row{margin:0 12px 7px;background:var(--s2);border:0.5px solid var(--br2);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s}
 .player-row:hover{border-color:var(--br)}
+.player-row.hot{border-color:rgba(34,197,94,0.35);box-shadow:0 0 10px rgba(34,197,94,0.07)}
+.player-row.cold{border-color:rgba(168,85,247,0.35);box-shadow:0 0 10px rgba(168,85,247,0.07)}
 .pl-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;flex-shrink:0}
 .pl-name{font-size:13px;font-weight:500}
 .pl-meta{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px}
+.hot-cold-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap}
+.hcb-hot{background:rgba(34,197,94,0.15);color:var(--win)}
+.hcb-cold{background:rgba(168,85,247,0.15);color:var(--loss)}
 
 /* REPORT */
 .report-hdr{padding:16px;border-bottom:0.5px solid var(--br2)}
@@ -116,6 +142,14 @@ html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM
 .vtc-label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px}
 .vtc-meaning{font-size:13px;color:var(--tx);margin-top:4px;line-height:1.5}
 .vtc-formula{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:5px}
+/* Prediction box */
+.pred-box{margin:10px 0 0;padding:10px 12px;border-radius:8px;display:flex;align-items:center;gap:10px}
+.pred-box.high{background:rgba(34,197,94,0.12);border:0.5px solid rgba(34,197,94,0.3)}
+.pred-box.low{background:rgba(168,85,247,0.12);border:0.5px solid rgba(168,85,247,0.3)}
+.pred-box.neutral{background:rgba(90,97,112,0.15);border:0.5px solid rgba(90,97,112,0.3)}
+.pred-icon{font-size:20px}
+.pred-text{font-size:12px;font-weight:500}
+.pred-pct{font-family:'Bebas Neue',sans-serif;font-size:22px;margin-left:auto}
 .season-tabs{display:flex;gap:8px;padding:12px 16px 0}
 .stab{flex:1;padding:8px;border-radius:8px;border:0.5px solid var(--br2);text-align:center;cursor:pointer;font-size:12px;color:var(--mu);font-family:'DM Mono',monospace;transition:all .15s}
 .stab.on{border-color:var(--gold);background:rgba(201,168,76,0.1);color:var(--gold)}
@@ -139,7 +173,14 @@ html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM
 .vs-controls{padding:12px 16px;border-bottom:0.5px solid var(--br2);display:flex;gap:8px;align-items:center}
 .vs-select{flex:1;background:var(--s2);border:0.5px solid var(--br2);color:var(--tx);padding:9px 12px;border-radius:8px;font-size:13px}
 .vs-go{background:var(--gold);color:#000;border:none;padding:9px 16px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;cursor:pointer}
-.vs-matchup{display:flex;align-items:center;padding:16px;border-bottom:0.5px solid var(--br2)}
+.vs-advantage{margin:12px 12px 0;padding:12px 14px;border-radius:10px;display:flex;align-items:center;gap:10px}
+.vs-advantage.a{background:rgba(34,197,94,0.1);border:0.5px solid rgba(34,197,94,0.3)}
+.vs-advantage.b{background:rgba(168,85,247,0.1);border:0.5px solid rgba(168,85,247,0.3)}
+.vs-advantage.neutral{background:rgba(90,97,112,0.1);border:0.5px solid rgba(90,97,112,0.3)}
+.vs-adv-icon{font-size:22px}
+.vs-adv-text{font-size:13px;font-weight:500}
+.vs-adv-sub{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px}
+.vs-matchup{display:flex;align-items:center;padding:14px 16px;border-bottom:0.5px solid var(--br2)}
 .vs-team{flex:1;text-align:center}
 .vs-team-logo{width:48px;height:48px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .vs-team-logo img{width:38px;height:38px;object-fit:contain}
@@ -149,8 +190,8 @@ html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM
 .vs-sub{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;padding:8px 16px 4px}
 
 /* MODAL */
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;align-items:flex-end;justify-content:center}
-.modal.show{display:flex}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:100;align-items:flex-end;justify-content:center}
+.modal.show{display:flex;animation:fi .15s ease}
 .modal-box{background:var(--s1);border-radius:16px 16px 0 0;padding:24px;width:100%;max-width:480px;border-top:0.5px solid var(--br)}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold-l);margin-bottom:14px;letter-spacing:1px}
 .modal-date{width:100%;background:var(--s2);border:0.5px solid var(--br);color:var(--tx);padding:10px 14px;border-radius:8px;font-family:'DM Mono',monospace;font-size:14px;margin-bottom:14px}
@@ -178,13 +219,24 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   </div>
 </div>
 
-<!-- S0: TEAMS -->
-<div class="screen active" id="s-teams">
+<!-- S0: HOME - TOP PICKS -->
+<div class="screen active" id="s-home">
+  <div class="home-vib" id="home-vib"></div>
+  <div class="nav-tabs">
+    <div class="nav-tab on" onclick="showPicksSection('over',this)">🔥 TOP OVER</div>
+    <div class="nav-tab" onclick="showPicksSection('under',this)">🔻 TOP UNDER</div>
+    <div class="nav-tab" onclick="show('teams')">⚾ EQUIPOS</div>
+  </div>
+  <div id="picks-content"><div class="picks-loading">Calculando picks del día...</div></div>
+</div>
+
+<!-- S1: TEAMS -->
+<div class="screen" id="s-teams">
   <div class="teams-header">
     <div class="league-badge">MLB</div>
     <div>
-      <div class="tvi-label">VIBRACIÓN UNIVERSAL HOY</div>
-      <div class="tvi-meaning" id="teams-vib-txt"></div>
+      <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px">VIBRACIÓN HOY</div>
+      <div id="teams-vib-txt" style="font-size:11px;margin-top:1px"></div>
     </div>
   </div>
   <div class="search-wrap">
@@ -193,21 +245,15 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   <div class="teams-list" id="teams-list"><div class="loading">Cargando equipos</div></div>
 </div>
 
-<!-- S1: TEAM DETAIL -->
+<!-- S2: TEAM DETAIL -->
 <div class="screen" id="s-team">
   <div id="team-hero"></div>
-
-  <!-- TODAY VIB + VIB TABS -->
-  <div class="sec-label" id="vib-section-label">VIBRACIÓN DEL EQUIPO</div>
+  <div class="sec-label">VIBRACIÓN DEL EQUIPO HOY</div>
+  <div id="today-vib-card-wrap"></div>
   <div style="padding:0 12px 4px">
-    <div class="today-vib-card" id="today-vib-card"></div>
-  </div>
-  <div style="padding:8px 12px 0">
     <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">EXPLORAR OTRAS VIBRACIONES</div>
     <div class="vib-tabs-wrap" id="vib-tabs"></div>
   </div>
-  
-
   <div class="sec-label">MANAGER</div>
   <div id="mgr-card"></div>
   <div class="sec-label">JUGADORES</div>
@@ -215,7 +261,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   <div style="height:30px"></div>
 </div>
 
-<!-- S2: REPORT -->
+<!-- S3: REPORT -->
 <div class="screen" id="s-report">
   <div class="report-hdr" id="report-hdr"></div>
   <div class="season-tabs">
@@ -226,7 +272,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   <div style="height:30px"></div>
 </div>
 
-<!-- S3: VS -->
+<!-- S4: VS -->
 <div class="screen" id="s-vs">
   <div class="vs-controls">
     <select class="vs-select" id="vs-select"><option value="">— Selecciona oponente —</option></select>
@@ -259,6 +305,7 @@ const VC={1:'#E05C5C',2:'#E8874A',3:'#D4A017',4:'#4FC3A1',5:'#5B8FE8',6:'#C084FC
 const VB={1:'rgba(224,92,92,.18)',2:'rgba(232,135,74,.18)',3:'rgba(212,160,23,.18)',4:'rgba(79,195,161,.18)',5:'rgba(91,143,232,.18)',6:'rgba(192,132,252,.18)',7:'rgba(52,211,153,.18)',8:'rgba(248,113,113,.18)',9:'rgba(251,191,36,.18)'};
 const VM={1:'Liderazgo · Inicio',2:'Cooperación · Balance',3:'Creatividad · Energía',4:'Estabilidad · Disciplina',5:'Libertad · Cambio',6:'Armonía · Protección',7:'Análisis · Precisión',8:'Poder · Resultados',9:'Sabiduría · Cierre'};
 
+// ── NUMEROLOGY ────────────────────────────────────────────
 function red(n){n=Math.abs(Math.round(n));while(n>9){n=String(n).split('').reduce((a,d)=>a+parseInt(d),0);}return n===0?1:n;}
 function sd(s){return String(s).split('T')[0].replace(/\D/g,'').split('').reduce((a,d)=>a+parseInt(d),0);}
 function vib(b,t){if(!b||!t)return 1;return red(sd(b)+sd(t));}
@@ -276,7 +323,43 @@ function logoEl(mlbId,bg,tx,abbr,size=44){
   </div>`;
 }
 
-// STATE
+// ── PREDICTION ENGINE ─────────────────────────────────────
+function calcPrediction(stats, vibToday, isPitcher) {
+  let totalG=0, totalScore=0;
+  const vals=[];
+  for(let v=1;v<=9;v++){
+    const s=stats[v];
+    if(!s||s.G<3)continue;
+    const score=isPitcher?(s.G>0?s.W/(s.W+s.L||1)*100:0):(s.G>0?s.H/s.G:0);
+    vals.push(score);
+    totalG+=s.G;
+    totalScore+=score;
+  }
+  if(vals.length===0)return{level:'neutral',pct:0,label:'SIN DATOS'};
+  const avg=totalScore/vals.length;
+  const todaySt=stats[vibToday];
+  if(!todaySt||todaySt.G<3)return{level:'neutral',pct:0,label:'POCOS DATOS'};
+  const todayScore=isPitcher?(todaySt.G>0?todaySt.W/(todaySt.W+todaySt.L||1)*100:0):(todaySt.G>0?todaySt.H/todaySt.G:0);
+  const diff=avg>0?Math.round(((todayScore-avg)/avg)*100):0;
+  const maxScore=Math.max(...vals);
+  const minScore=Math.min(...vals);
+  const bestVib=Object.entries(stats).find(([v,s])=>{
+    if(!s||s.G<3)return false;
+    const sc=isPitcher?(s.G>0?s.W/(s.W+s.L||1)*100:0):(s.G>0?s.H/s.G:0);
+    return Math.abs(sc-maxScore)<0.001;
+  });
+  const worstVib=Object.entries(stats).find(([v,s])=>{
+    if(!s||s.G<3)return false;
+    const sc=isPitcher?(s.G>0?s.W/(s.W+s.L||1)*100:0):(s.G>0?s.H/s.G:0);
+    return Math.abs(sc-minScore)<0.001&&sc<maxScore;
+  });
+  let level='neutral',label='NEUTRAL';
+  if(diff>=20){level='high';label='HIGH PERFORMANCE';}
+  else if(diff<=-20){level='low';label='LOW PERFORMANCE';}
+  return{level,label,pct:diff,bestVib:bestVib?parseInt(bestVib[0]):null,worstVib:worstVib?parseInt(worstVib[0]):null};
+}
+
+// ── STATE ─────────────────────────────────────────────────
 let curDate=today();
 let allTeams=[];
 let curTeam=null;
@@ -284,45 +367,150 @@ let curPerson=null;
 let curIsManager=false;
 let curSeason=2026;
 let curVSSeason=2025;
-let reportDate=today();
-let teamVibStats=null; // cached team vib stats
+let teamVibStats2025=null;
+let teamVibStats2026=null;
+let cachedPicks=null; // cache picks so we don't reload
+let currentPicksSection='over';
 
-// TOPBAR
+// ── TOPBAR / NAV ──────────────────────────────────────────
 document.getElementById('back-btn').onclick=()=>{
   const cur=document.querySelector('.screen.active').id;
-  if(cur==='s-team')show('teams');
+  if(cur==='s-teams')show('home');
+  else if(cur==='s-team')show('teams');
   else if(cur==='s-report'||cur==='s-vs')show('team');
 };
+
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s-'+id).classList.add('active');
   const bb=document.getElementById('back-btn');
-  id==='teams'?bb.classList.remove('show'):bb.classList.add('show');
+  (id==='home'||id==='teams')?bb.classList.remove('show'):bb.classList.add('show');
   window.scrollTo(0,0);
 }
 
-// INIT
+// ── INIT ──────────────────────────────────────────────────
 async function init(){
   const t=today();
   const uv=vibDay(t);
   document.getElementById('topbar-vib').textContent=uv;
   document.getElementById('topbar-vib').style.color=VC[uv];
   document.getElementById('topbar-date').textContent=fmtLong(t);
-  document.getElementById('teams-vib-txt').textContent=`${uv} · ${VM[uv]}`;
-  document.getElementById('teams-vib-txt').style.color=VC[uv];
-  await loadTeams();
+
+  // Home vib header
+  document.getElementById('home-vib').innerHTML=`
+    <div class="home-vib-row">
+      <div class="home-vib-num" style="color:${VC[uv]}">${uv}</div>
+      <div class="home-vib-info">
+        <div class="home-vib-label">VIBRACIÓN UNIVERSAL HOY</div>
+        <div class="home-vib-meaning">${VM[uv]}</div>
+        <div class="home-vib-date">${fmtLong(t)}</div>
+      </div>
+    </div>`;
+
+  // Load teams and picks in parallel
+  const [teamsData] = await Promise.all([
+    fetch(`${API}/teams`).then(r=>r.json()).catch(()=>[]),
+  ]);
+  allTeams=teamsData;
+  renderTeams();
+  const uv2=vibDay(today());
+  document.getElementById('teams-vib-txt').textContent=`${uv2} · ${VM[uv2]}`;
+  document.getElementById('teams-vib-txt').style.color=VC[uv2];
+
+  // Load picks async
+  loadTopPicks();
 }
 
-async function loadTeams(){
-  try{
-    const r=await fetch(`${API}/teams`);
-    allTeams=await r.json();
-    renderTeams();
-  }catch(e){
-    document.getElementById('teams-list').innerHTML=`<div class="err">Error: ${e.message}</div>`;
+// ── TOP PICKS ─────────────────────────────────────────────
+async function loadTopPicks(){
+  if(cachedPicks){renderPicks(cachedPicks,currentPicksSection);return;}
+  document.getElementById('picks-content').innerHTML='<div class="picks-loading">Calculando picks del día…<br><small style="opacity:.5">Esto puede tomar ~30 segundos</small></div>';
+
+  const uv=vibDay(today());
+  const results=[];
+
+  // Process all teams' players
+  for(const team of allTeams){
+    try{
+      const pRes=await fetch(`${API}/players?teamId=${team.id}`);
+      const players=await pRes.json();
+      for(const p of players){
+        try{
+          const vibToday=vib(p.birth_date,today());
+          const isPitcher=['SP','RP','P'].includes(p.position||'');
+          const aRes=await fetch(`${API}/analysis/player?playerId=${p.id}&season=2025`);
+          const aData=await aRes.json();
+          if(aData.error||!aData.stats)continue;
+          const pred=calcPrediction(aData.stats,vibToday,isPitcher);
+          if(pred.label==='SIN DATOS'||pred.label==='POCOS DATOS')continue;
+          results.push({
+            id:p.id, name:p.name, position:p.position,
+            teamId:team.id, teamName:team.name, abbr:team.abbr,
+            colors:team.colors, destinyNumber:p.destiny_number||dest(p.birth_date),
+            vibToday, isPitcher, ...pred, player:p, team,
+          });
+        }catch(e){}
+      }
+    }catch(e){}
   }
+
+  cachedPicks=results;
+  renderPicks(results,currentPicksSection);
 }
 
+function showPicksSection(section,el){
+  currentPicksSection=section;
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  if(cachedPicks)renderPicks(cachedPicks,section);
+}
+
+function renderPicks(results,section){
+  const isOver=section==='over';
+  const filtered=results
+    .filter(p=>isOver?p.level==='high':p.level==='low')
+    .sort((a,b)=>isOver?b.pct-a.pct:a.pct-b.pct)
+    .slice(0,8);
+
+  if(!filtered.length){
+    document.getElementById('picks-content').innerHTML=`<div class="loading">No hay picks disponibles aún</div>`;
+    return;
+  }
+
+  const html=`<div class="picks-section">
+    <div class="picks-title">
+      ${isOver?'🔥 TOP OVER — MAYOR RENDIMIENTO HOY':'🔻 TOP UNDER — MENOR RENDIMIENTO HOY'}
+      <span class="badge ${isOver?'over-badge':'under-badge'}">${filtered.length} picks</span>
+    </div>
+    ${filtered.map(p=>{
+      const c=p.colors||{bg:'#1A1D28',tx:'#C9A84C'};
+      const pctStr=p.pct>=0?`+${p.pct}%`:`${p.pct}%`;
+      const pctColor=isOver?'var(--win)':'var(--loss)';
+      return`<div class="pick-card ${isOver?'hot':'cold'}" onclick='openTeamThenPlayer("${p.teamId}",${JSON.stringify(p.player)})'>
+        <div class="pick-avatar" style="background:${VB[p.destinyNumber]};color:${VC[p.destinyNumber]}">${ini(p.name)}</div>
+        <div style="flex:1;min-width:0">
+          <div class="pick-name">${p.name}</div>
+          <div class="pick-team">${p.teamName} · ${p.position}</div>
+          <div style="margin-top:4px;font-size:10px;color:var(--mu);font-family:'DM Mono',monospace">
+            Vib. activa: <span style="color:${VC[p.vibToday]};font-family:'Bebas Neue',sans-serif;font-size:14px">${p.vibToday}</span>
+          </div>
+        </div>
+        <div class="pick-right">
+          <div class="pick-pct" style="color:${pctColor}">${pctStr}</div>
+          <div class="pick-label" style="color:${pctColor}">${isOver?'HIGH PERF':'LOW PERF'}</div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+  document.getElementById('picks-content').innerHTML=html;
+}
+
+async function openTeamThenPlayer(teamId,player){
+  await openTeam(teamId);
+  openReport(player,false,today());
+}
+
+// ── TEAMS ─────────────────────────────────────────────────
 function renderTeams(search=''){
   const filtered=allTeams.filter(t=>t.name.toLowerCase().includes(search.toLowerCase())).sort((a,b)=>a.name.localeCompare(b.name));
   document.getElementById('teams-list').innerHTML=filtered.map(t=>{
@@ -337,31 +525,27 @@ function renderTeams(search=''){
 }
 document.getElementById('search-inp').oninput=e=>renderTeams(e.target.value);
 
-// TEAM DETAIL
+// ── TEAM DETAIL ───────────────────────────────────────────
 async function openTeam(id){
   curTeam=allTeams.find(t=>t.id===id);
   if(!curTeam)return;
-  teamVibStats=null;
+  teamVibStats2025=null;teamVibStats2026=null;
   const c=curTeam.colors||{bg:'#1A1D28',tx:'#C9A84C'};
 
-  // Hero
   document.getElementById('team-hero').innerHTML=`
     <div class="team-hero">
       <div class="team-hero-top">
         ${logoEl(curTeam.mlb_id,c.bg,c.tx,curTeam.abbr,58)}
-        <div>
+        <div style="flex:1">
           <div class="team-hero-name">${curTeam.name}</div>
           <div class="team-hero-div">${curTeam.division||''} · MLB</div>
         </div>
       </div>
     </div>`;
 
-  // Load team vib stats + show today
-  document.getElementById('today-vib-card').innerHTML='<div class="loading">Calculando vibraciones</div>';
+  document.getElementById('today-vib-card-wrap').innerHTML='<div class="loading">Calculando vibraciones</div>';
   document.getElementById('vib-tabs').innerHTML='';
-  document.getElementById('vib-detail').innerHTML='';
 
-  // Manager
   const mgr={name:curTeam.manager_name,birth_date:curTeam.manager_birth,destiny_number:curTeam.manager_destiny||dest(curTeam.manager_birth),position:'MGR'};
   const mgrDest=mgr.destiny_number||1;
   const mgrVib=vib(mgr.birth_date,curDate);
@@ -372,7 +556,7 @@ async function openTeam(id){
         <div style="flex:1">
           <div class="pc-name">${mgr.name||'—'}</div>
           <div class="pc-meta">Manager · ${fmtD(mgr.birth_date)}</div>
-          <div class="pc-vib-today">Vibración hoy: <span style="color:${VC[mgrVib]};font-family:'Bebas Neue',sans-serif;font-size:16px">${mgrVib}</span></div>
+          <div style="margin-top:4px;font-size:11px;color:var(--mu)">Vibración hoy: <span style="color:${VC[mgrVib]};font-family:'Bebas Neue',sans-serif;font-size:16px">${mgrVib}</span></div>
         </div>
         <div class="pc-right"><div class="dest-chip"><div class="dest-chip-label">DESTINO</div><div class="dest-chip-num" style="color:${VC[mgrDest]}">${mgrDest}</div></div></div>
       </div>
@@ -383,25 +567,45 @@ async function openTeam(id){
       </div>
     </div>`;
 
-  // Players
   document.getElementById('players-list').innerHTML='<div class="loading">Cargando</div>';
-
   show('team');
 
-  // Load team vibration stats async
   loadTeamVibStats(id);
 
-  // Load players
   try{
     const r=await fetch(`${API}/players?teamId=${id}`);
     const players=await r.json();
+
+    // Get 2025 stats for HOT/COLD labels
+    const playerStatsMap={};
+    await Promise.all(players.map(async p=>{
+      try{
+        const r2=await fetch(`${API}/analysis/player?playerId=${p.id}&season=2025`);
+        const d=await r2.json();
+        if(!d.error&&d.stats)playerStatsMap[p.id]=d.stats;
+      }catch(e){}
+    }));
+
     document.getElementById('players-list').innerHTML=players.map(p=>{
-      const pv=vib(p.birth_date,curDate);const pd=p.destiny_number||dest(p.birth_date);
-      return`<div class="player-row" onclick='openReport(${JSON.stringify(p)},false,"${curDate}")'>
+      const pv=vib(p.birth_date,curDate);
+      const pd=p.destiny_number||dest(p.birth_date);
+      const isPitcher=['SP','RP','P'].includes(p.position||'');
+      const stats=playerStatsMap[p.id];
+      let hotCold='',rowClass='';
+      if(stats){
+        const pred=calcPrediction(stats,pv,isPitcher);
+        if(pred.level==='high'){hotCold='<span class="hot-cold-badge hcb-hot">🔥 HOT</span>';rowClass='hot';}
+        else if(pred.level==='low'){hotCold='<span class="hot-cold-badge hcb-cold">❄️ COLD</span>';rowClass='cold';}
+        if(pred.bestVib){
+          hotCold+=`<span style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;margin-left:4px">Mejor V<span style="color:${VC[pred.bestVib]};font-family:'Bebas Neue',sans-serif;font-size:12px">${pred.bestVib}</span></span>`;
+        }
+      }
+      return`<div class="player-row ${rowClass}" onclick='openReport(${JSON.stringify(p)},false,"${curDate}")'>
         <div class="pl-avatar" style="background:${VB[pd]};color:${VC[pd]}">${ini(p.name)}</div>
-        <div style="flex:1">
+        <div style="flex:1;min-width:0">
           <div class="pl-name">${p.name}</div>
           <div class="pl-meta">${p.position} · Destino <span style="color:${VC[pd]};font-family:'Bebas Neue',sans-serif;font-size:13px">${pd}</span></div>
+          ${hotCold?`<div style="margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">${hotCold}</div>`:''}
         </div>
         <div class="vib-badge" style="background:${VB[pv]};color:${VC[pv]}">${pv}</div>
       </div>`;
@@ -411,146 +615,131 @@ async function openTeam(id){
   }
 }
 
-let teamVibStats2025=null;
-let teamVibStats2026=null;
-
 async function loadTeamVibStats(teamId){
   try{
     const [r25,r26]=await Promise.all([
       fetch(`${API}/analysis/manager?teamId=${teamId}&season=2025`),
       fetch(`${API}/analysis/manager?teamId=${teamId}&season=2026`)
     ]);
-    const d25=await r25.json();
-    const d26=await r26.json();
-    teamVibStats=d25.stats||{};
-    teamVibStats2025=d25.stats||{};
-    teamVibStats2026=d26.stats||{};
+    const d25=await r25.json();const d26=await r26.json();
+    teamVibStats2025=d25.stats||{};teamVibStats2026=d26.stats||{};
+    for(let v=1;v<=9;v++){if(!teamVibStats2026[v])teamVibStats2026[v]={G:0,W:0,L:0};}
+
+    // Find best/worst vib from 2025
+    let bestV=1,worstV=1,bestPct=0,worstPct=100;
     for(let v=1;v<=9;v++){
-      if(!teamVibStats2026[v])teamVibStats2026[v]={G:0,W:0,L:0};
+      const s=teamVibStats2025[v];if(!s||s.G<5)continue;
+      const p=Math.round(s.W/s.G*100);
+      if(p>bestPct){bestPct=p;bestV=v;}
+      if(p<worstPct){worstPct=p;worstV=v;}
     }
-    renderTeamVibSection(teamId);
+
+    const todayV=vibDay(curDate);
+
+    // Build team hero with best/worst
+    const c=curTeam.colors||{bg:'#1A1D28',tx:'#C9A84C'};
+    document.getElementById('team-hero').innerHTML=`
+      <div class="team-hero">
+        <div class="team-hero-top">
+          ${logoEl(curTeam.mlb_id,c.bg,c.tx,curTeam.abbr,58)}
+          <div style="flex:1">
+            <div class="team-hero-name">${curTeam.name}</div>
+            <div class="team-hero-div">${curTeam.division||''} · MLB</div>
+          </div>
+        </div>
+        <div class="best-worst-row">
+          <div class="bw-chip" style="background:rgba(34,197,94,0.1);border:0.5px solid rgba(34,197,94,0.25)">
+            <div class="bw-chip-label" style="color:var(--win)">MEJOR VIB.</div>
+            <div class="bw-chip-num" style="color:${VC[bestV]}">${bestV}</div>
+            <div class="bw-chip-sub" style="color:var(--win)">${bestPct}% WIN</div>
+          </div>
+          <div class="bw-chip" style="background:rgba(168,85,247,0.1);border:0.5px solid rgba(168,85,247,0.25)">
+            <div class="bw-chip-label" style="color:var(--loss)">PEOR VIB.</div>
+            <div class="bw-chip-num" style="color:${VC[worstV]}">${worstV}</div>
+            <div class="bw-chip-sub" style="color:var(--loss)">${worstPct}% WIN</div>
+          </div>
+          <div class="bw-chip" style="background:${VB[todayV]};border:0.5px solid ${VC[todayV]}44">
+            <div class="bw-chip-label" style="color:var(--mu)">HOY</div>
+            <div class="bw-chip-num" style="color:${VC[todayV]}">${todayV}</div>
+            <div class="bw-chip-sub" style="color:var(--mu)">${fmtLong(curDate)}</div>
+          </div>
+        </div>
+      </div>`;
+
+    renderVibCard(todayV);
+    renderVibTabs(todayV);
   }catch(e){
-    document.getElementById('today-vib-card').innerHTML=`<div style="color:var(--mu);font-size:11px;font-family:'DM Mono',monospace">Sin datos históricos disponibles</div>`;
+    document.getElementById('today-vib-card-wrap').innerHTML=`<div style="color:var(--mu);font-size:11px;padding:12px;font-family:'DM Mono',monospace">Sin datos históricos</div>`;
   }
 }
 
-function renderTeamVibSection(teamId){
-  if(!teamVibStats)return;
-  const todayV=vibDay(curDate);
+function renderVibCard(v){
+  const st25=teamVibStats2025?teamVibStats2025[v]||{G:0,W:0,L:0}:{G:0,W:0,L:0};
+  const st26=teamVibStats2026?teamVibStats2026[v]||{G:0,W:0,L:0}:{G:0,W:0,L:0};
+  const pct25=st25.G>0?Math.round(st25.W/st25.G*100):0;
+  const pct26=st26.G>0?Math.round(st26.W/st26.G*100):0;
 
-  // Render today's card
-  renderTodayVibCard(todayV);
+  function seasonBlock(st,pct,year,isLive){
+    const isGood=pct>=55;
+    const pill=isLive?`<span class="live-pill">LIVE</span>`:'';
+    return`<div class="${year===2025?'season-divider':''}">
+      <div class="season-tag">TEMPORADA ${year}${pill}</div>
+      ${st.G>0?`
+        <div class="tvc-record">
+          <span class="tvc-wl" style="color:var(--win)">${st.W}W</span>
+          <span style="color:var(--mu);font-family:'DM Mono',monospace;font-size:14px"> — </span>
+          <span class="tvc-wl" style="color:var(--loss)">${st.L}L</span>
+          <span class="tvc-pct">· ${st.G} juegos</span>
+        </div>
+        <div class="win-bar-wrap">
+          <div class="win-bar-fill" style="width:${pct}%;background:${isGood?'var(--win)':'var(--loss)'}"></div>
+        </div>
+        <div class="win-bar-label">
+          <span style="color:var(--win)">WIN ${pct}%</span>
+          <span style="color:var(--loss)">LOSS ${100-pct}%</span>
+        </div>`
+      :`<div style="color:var(--mu);font-size:11px;font-family:'DM Mono',monospace;padding:3px 0">No games yet · Sin juegos aún</div>`}
+    </div>`;
+  }
 
-  // Render vib tabs 1-9
+  document.getElementById('today-vib-card-wrap').innerHTML=`
+    <div class="today-vib-card">
+      <div class="tvc-top">
+        <div class="tvc-num" style="color:${VC[v]}">${v}</div>
+        <div>
+          <div class="tvc-label">VIBRACIÓN DEL DÍA · ${fmtLong(curDate)}</div>
+          <div class="tvc-meaning" style="color:${VC[v]}">${VM[v]}</div>
+        </div>
+      </div>
+      ${seasonBlock(st25,pct25,2025,false)}
+      ${seasonBlock(st26,pct26,2026,true)}
+    </div>`;
+}
+
+function renderVibTabs(todayV){
   const tabs=document.getElementById('vib-tabs');
   tabs.innerHTML='';
   for(let v=1;v<=9;v++){
     const btn=document.createElement('div');
     btn.className='vib-tab'+(v===todayV?' active':'');
-    btn.style.background=VB[v];
-    btn.style.color=VC[v];
+    btn.style.background=VB[v];btn.style.color=VC[v];
     btn.textContent=v;
     btn.onclick=()=>{
       document.querySelectorAll('.vib-tab').forEach(t=>t.classList.remove('active'));
       btn.classList.add('active');
-      renderVibDetail(v);
+      renderVibCard(v);
     };
     tabs.appendChild(btn);
   }
-
 }
 
-function renderTodayVibCard(v){
-  const st25=teamVibStats2025[v]||{G:0,W:0,L:0};
-  const st26=teamVibStats2026[v]||{G:0,W:0,L:0};
-  const pct25=st25.G>0?Math.round(st25.W/st25.G*100):0;
-  const pct26=st26.G>0?Math.round(st26.W/st26.G*100):0;
-  const card=document.getElementById('today-vib-card');
-
-  function vibCardHTML(st, pct, year, isLive){
-    const isGood=pct>=55;
-    const livePill=isLive?'<span style="background:rgba(79,195,161,0.15);color:var(--ac);font-size:9px;font-family:DM Mono,monospace;padding:2px 7px;border-radius:20px;border:0.5px solid var(--ac);margin-left:6px">LIVE</span>':''
-    return `<div style="margin-bottom:${isLive?'0':'10px'};padding-bottom:${isLive?'0':'10px'};border-bottom:${isLive?'none':'0.5px solid var(--br2)'}">
-      <div style="font-size:9px;color:var(--mu);font-family:DM Mono,monospace;letter-spacing:1px;margin-bottom:6px">TEMPORADA ${year}${livePill}</div>
-      ${st.G>0?`
-      <div class="tvc-record">
-        <span class="tvc-wl" style="color:var(--win)">${st.W}W</span>
-        <span style="color:var(--mu);font-family:DM Mono,monospace;font-size:14px"> — </span>
-        <span class="tvc-wl" style="color:var(--loss)">${st.L}L</span>
-        <span class="tvc-pct">· ${st.G} juegos</span>
-      </div>
-      <div class="win-bar-wrap" style="margin:6px 0 4px">
-        <div class="win-bar-fill" style="width:${pct}%;background:${isGood?'var(--win)':'var(--loss)'}"></div>
-      </div>
-      <div class="win-bar-label">
-        <span style="color:var(--win)">WIN ${pct}%</span>
-        <span style="color:var(--loss)">LOSS ${100-pct}%</span>
-      </div>`
-      :`<div style="color:var(--mu);font-size:11px;font-family:DM Mono,monospace;padding:4px 0">No games yet · Sin juegos aún</div>`}
-    </div>`;
-  }
-
-  card.innerHTML=`
-    <div class="tvc-top">
-      <div class="tvc-num" style="color:${VC[v]}">${v}</div>
-      <div class="tvc-info">
-        <div class="tvc-label">VIBRACIÓN DEL DÍA · ${fmtLong(curDate)}</div>
-        <div class="tvc-meaning" style="color:${VC[v]}">${VM[v]}</div>
-      </div>
-    </div>
-    ${vibCardHTML(st25,pct25,2025,false)}
-    ${vibCardHTML(st26,pct26,2026,true)}`;
-}
-
-
-function renderVibDetail(v){
-  const st=teamVibStats[v]||{G:0,W:0,L:0};
-  const pct=st.G>0?Math.round(st.W/st.G*100):0;
-  const todayV=vibDay(curDate);
-  const isToday=v===todayV;
-  const label=pct>=65?'🔥 FAVORABLE':pct>=55?'✅ SOBRE PROMEDIO':pct<=35?'🔻 DESFAVORABLE':pct<=45?'⚠️ BAJO PROMEDIO':'⚖️ NEUTRAL';
-  const labelColor=pct>=55?'var(--win)':pct<=45?'var(--loss)':'var(--mu)';
-
-  document.getElementById('vib-detail').innerHTML=`
-    <div class="vib-detail-card">
-      <div class="vdc-header">
-        <div class="vdc-num" style="color:${VC[v]}">${v}</div>
-        <div>
-          <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px">VIBRACIÓN ${v}${isToday?' · HOY':''}</div>
-          <div class="vdc-meaning">${VM[v]}</div>
-          <div style="margin-top:6px;font-size:12px;font-weight:500;color:${labelColor}">${st.G>0?label:'Sin datos'}</div>
-        </div>
-      </div>
-      ${st.G>0?`
-      <div class="vdc-stats">
-        <div class="vdc-stat">
-          <div class="vdc-stat-val" style="color:var(--win)">${st.W}</div>
-          <div class="vdc-stat-label">WINS</div>
-        </div>
-        <div class="vdc-stat">
-          <div class="vdc-stat-val" style="color:var(--loss)">${st.L}</div>
-          <div class="vdc-stat-label">LOSSES</div>
-        </div>
-        <div class="vdc-stat">
-          <div class="vdc-stat-val" style="color:${pct>=50?'var(--win)':'var(--loss)'}">${pct}%</div>
-          <div class="vdc-stat-label">WIN RATE</div>
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <div class="win-bar-wrap" style="height:8px">
-          <div class="win-bar-fill" style="width:${pct}%;background:${pct>=50?'var(--win)':'var(--loss)'}"></div>
-        </div>
-      </div>
-      `:`<div style="color:var(--mu);font-size:11px;font-family:'DM Mono',monospace;text-align:center;padding:10px 0">Sin juegos registrados en vibración ${v}</div>`}
-    </div>`;
-}
-
-// REPORT
+// ── REPORT ────────────────────────────────────────────────
 function openReport(person,isManager,date){
   if(typeof person==='string')person=JSON.parse(person);
   curPerson=person;curIsManager=isManager;reportDate=date||curDate;curSeason=2026;
   const cv=vib(person.birth_date,reportDate);
   const dv=person.destiny_number||dest(person.birth_date);
+
   document.getElementById('report-hdr').innerHTML=`
     <div class="rh-person">
       <div class="rh-avatar" style="background:${VB[dv]};color:${VC[dv]}">${ini(person.name)}</div>
@@ -577,7 +766,6 @@ function openReport(person,isManager,date){
       loadReport(person,isManager,curSeason,reportDate);
     };
   });
-
   loadReport(person,isManager,2026,reportDate);
   show('report');
 }
@@ -593,8 +781,9 @@ async function loadReport(person,isManager,season,date){
       const d=await r.json();
       if(d.error)throw new Error(d.error);
       stats=d.stats;
-      const maxW=Math.max(...Object.values(stats).map(s=>s.W||0),1);
-      const minW=Math.min(...Object.values(stats).filter(s=>s.G>0).map(s=>s.W||0));
+      const vals=Object.values(stats).filter(s=>s.G>0);
+      const maxW=Math.max(...vals.map(s=>s.W),1);
+      const minW=vals.length?Math.min(...vals.map(s=>s.W)):0;
       headers=['VIB','G','W','L','W%','TEND.'];
       for(let v=1;v<=9;v++){
         const st=stats[v];
@@ -603,7 +792,7 @@ async function loadReport(person,isManager,season,date){
         const tc=pct>=55?'over':pct<=45?'under':'even';
         const isToday=v===todayVib;
         const isBest=st.W===maxW&&st.W>0;
-        const isWorst=st.W===minW&&st.G>0&&st.W<maxW;
+        const isWorst=st.G>0&&st.W===minW&&minW<maxW;
         rows+=`<tr class="${isBest?'best':isWorst?'worst':''}${isToday?' today-row':''}">
           <td class="vib-n" style="color:${VC[v]}">${v}${isToday?'<span class="today-tag">HOY</span>':''}</td>
           <td style="color:var(--mu)">${st.G}</td>
@@ -619,18 +808,32 @@ async function loadReport(person,isManager,season,date){
       const d=await r.json();
       if(d.error)throw new Error(d.error);
       stats=d.stats;
+      const pred=calcPrediction(stats,todayVib,isPitcher);
+
+      // Prediction box in header
+      const predHTML=`<div class="pred-box ${pred.level}">
+        <div class="pred-icon">${pred.level==='high'?'🔥':pred.level==='low'?'🔻':'⚖️'}</div>
+        <div>
+          <div class="pred-text" style="color:${pred.level==='high'?'var(--win)':pred.level==='low'?'var(--loss)':'var(--mu)'}">${pred.label}</div>
+          <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px">vs promedio histórico</div>
+        </div>
+        ${Math.abs(pred.pct)>0?`<div class="pred-pct" style="color:${pred.level==='high'?'var(--win)':'var(--loss)'}">${pred.pct>=0?'+':''}${pred.pct}%</div>`:''}
+      </div>`;
+
+      // Add pred box to header
+      document.getElementById('report-hdr').innerHTML+=predHTML;
+
       if(isPitcher){
+        const vals=Object.values(stats).filter(s=>s.G>0);
+        const maxW=Math.max(...vals.map(s=>s.W),1);
+        const minW=vals.length?Math.min(...vals.map(s=>s.W)):0;
         headers=['VIB','G','W','L','SO','TEND.'];
-        const maxW=Math.max(...Object.values(stats).map(s=>s.W||0),1);
-        const minW=Math.min(...Object.values(stats).filter(s=>s.G>0).map(s=>s.W||0));
         for(let v=1;v<=9;v++){
           const st=stats[v];
           const trend=st.W===maxW&&st.W>0?'OVER':st.G>3&&st.W<(maxW*0.4)?'UNDER':'EVEN';
           const tc=trend==='OVER'?'over':trend==='UNDER'?'under':'even';
           const isToday=v===todayVib;
-          const isBest=st.W===maxW&&st.W>0;
-          const isWorst=st.G>0&&st.W===minW&&st.W<maxW;
-          rows+=`<tr class="${isBest?'best':isWorst?'worst':''}${isToday?' today-row':''}">
+          rows+=`<tr class="${st.W===maxW&&st.W>0?'best':st.G>0&&st.W===minW&&minW<maxW?'worst':''}${isToday?' today-row':''}">
             <td class="vib-n" style="color:${VC[v]}">${v}${isToday?'<span class="today-tag">HOY</span>':''}</td>
             <td style="color:var(--mu)">${st.G}</td>
             <td style="color:var(--win)">${st.W}</td>
@@ -640,17 +843,16 @@ async function loadReport(person,isManager,season,date){
           </tr>`;
         }
       } else {
+        const vals=Object.values(stats).filter(s=>s.G>0);
+        const maxH=Math.max(...vals.map(s=>s.H),1);
+        const minH=vals.length?Math.min(...vals.map(s=>s.H)):0;
         headers=['VIB','G','H','HR','RBI','K','TEND.'];
-        const maxH=Math.max(...Object.values(stats).map(s=>s.H||0),1);
-        const minH=Math.min(...Object.values(stats).filter(s=>s.G>0).map(s=>s.H||0));
         for(let v=1;v<=9;v++){
           const st=stats[v];
           const trend=st.H===maxH&&st.H>0?'OVER':st.G>3&&st.H<(maxH*0.4)?'UNDER':'EVEN';
           const tc=trend==='OVER'?'over':trend==='UNDER'?'under':'even';
           const isToday=v===todayVib;
-          const isBest=st.H===maxH&&st.H>0;
-          const isWorst=st.G>0&&st.H===minH&&st.H<maxH;
-          rows+=`<tr class="${isBest?'best':isWorst?'worst':''}${isToday?' today-row':''}">
+          rows+=`<tr class="${st.H===maxH&&st.H>0?'best':st.G>0&&st.H===minH&&minH<maxH?'worst':''}${isToday?' today-row':''}">
             <td class="vib-n" style="color:${VC[v]}">${v}${isToday?'<span class="today-tag">HOY</span>':''}</td>
             <td style="color:var(--mu)">${st.G}</td>
             <td style="color:var(--win)">${st.H}</td>
@@ -664,7 +866,7 @@ async function loadReport(person,isManager,season,date){
     }
     container.innerHTML=`
       <div class="stats-wrap">
-        <div class="stats-info">TEMP. ${season}${season===2026?'<span class="live-pill">LIVE</span>':''} · 🟢 Mejor vibración · 🟣 Peor vibración · HOY = vibración actual</div>
+        <div class="stats-info">TEMP. ${season}${season===2026?'<span class="live-pill">LIVE</span>':''} · 🟢 Mejor · 🟣 Peor · HOY = vibración actual</div>
         <table class="stats-table">
           <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
           <tbody>${rows}</tbody>
@@ -675,7 +877,7 @@ async function loadReport(person,isManager,season,date){
   }
 }
 
-// DATE MODAL
+// ── DATE MODAL ────────────────────────────────────────────
 function openDateModal(person,isManager){
   if(typeof person==='string')person=JSON.parse(person);
   curPerson=person;curIsManager=isManager;
@@ -684,13 +886,10 @@ function openDateModal(person,isManager){
 }
 function closeModal(){document.getElementById('date-modal').classList.remove('show');}
 function modalToday(){document.getElementById('modal-date-inp').value=today();}
-function confirmModal(){
-  const d=document.getElementById('modal-date-inp').value;
-  closeModal();if(d)openReport(curPerson,curIsManager,d);
-}
+function confirmModal(){const d=document.getElementById('modal-date-inp').value;closeModal();if(d)openReport(curPerson,curIsManager,d);}
 document.getElementById('date-modal').onclick=e=>{if(e.target.id==='date-modal')closeModal();};
 
-// VS
+// ── VS ────────────────────────────────────────────────────
 function openVS(person,isManager){
   if(typeof person==='string')person=JSON.parse(person);
   curPerson=person;curIsManager=isManager;
@@ -703,6 +902,14 @@ function openVS(person,isManager){
   show('vs');
 }
 
+function setVSSeason(s){
+  curVSSeason=s;
+  document.getElementById('vs-tab-2025').classList.toggle('on',s===2025);
+  document.getElementById('vs-tab-2026').classList.toggle('on',s===2026);
+  const oppId=document.getElementById('vs-select').value;
+  if(oppId)loadVS();
+}
+
 async function loadVS(){
   const oppId=document.getElementById('vs-select').value;
   if(!oppId)return;
@@ -710,8 +917,7 @@ async function loadVS(){
   const container=document.getElementById('vs-content');
   container.innerHTML='<div class="loading">Cargando historial</div>';
   try{
-    const vsSeason=curVSSeason;
-    const r=await fetch(`${API}/analysis/vs?teamA=${curTeam.id}&teamB=${oppId}&season=${vsSeason}`);
+    const r=await fetch(`${API}/analysis/vs?teamA=${curTeam.id}&teamB=${oppId}&season=${curVSSeason}`);
     const d=await r.json();
     if(d.error)throw new Error(d.error);
     const ca=curTeam.colors||{bg:'#1A1D28',tx:'#C9A84C'};
@@ -720,6 +926,13 @@ async function loadVS(){
     const totalL=Object.values(d.statsA).reduce((s,x)=>s+(x.L||0),0);
     const todayVib=vib(curPerson.birth_date,curDate);
     const maxW=Math.max(...Object.values(d.statsA).map(s=>s.W||0),1);
+
+    // Calculate advantage
+    const wpct=totalW+totalL>0?totalW/(totalW+totalL)*100:50;
+    let advClass='neutral',advIcon='⚖️',advText='NEUTRAL',advSub='Historial equilibrado';
+    if(wpct>=60){advClass='a';advIcon='🟢';advText=`VENTAJA ${curTeam.abbr}`;advSub=`${Math.round(wpct)}% win rate histórico`;}
+    else if(wpct<=40){advClass='b';advIcon='🟣';advText=`VENTAJA ${opp.abbr}`;advSub=`${Math.round(100-wpct)}% win rate rival`;}
+
     let rows='';
     for(let v=1;v<=9;v++){
       const st=d.statsA[v];if(!st||st.G===0)continue;
@@ -734,37 +947,33 @@ async function loadVS(){
       </tr>`;
     }
     container.innerHTML=`
+      <div class="vs-advantage ${advClass}">
+        <div class="vs-adv-icon">${advIcon}</div>
+        <div><div class="vs-adv-text">${advText}</div><div class="vs-adv-sub">${advSub}</div></div>
+      </div>
       <div class="vs-matchup">
         <div class="vs-team">
-          <div class="vs-team-logo" style="background:${ca.bg}">${logoEl(curTeam.mlb_id,ca.bg,ca.tx,curTeam.abbr,48)}</div>
+          <div class="vs-team-logo">${logoEl(curTeam.mlb_id,ca.bg,ca.tx,curTeam.abbr,48)}</div>
           <div class="vs-team-label">${curTeam.abbr}</div>
           <div class="vs-record" style="color:var(--win)">${totalW}W</div>
         </div>
         <div class="vs-divider">VS</div>
         <div class="vs-team">
-          <div class="vs-team-logo" style="background:${cb.bg}">${logoEl(opp.mlb_id,cb.bg,cb.tx,opp.abbr,48)}</div>
+          <div class="vs-team-logo">${logoEl(opp.mlb_id,cb.bg,cb.tx,opp.abbr,48)}</div>
           <div class="vs-team-label">${opp.abbr}</div>
           <div class="vs-record" style="color:var(--loss)">${totalL}L</div>
         </div>
       </div>
-      <div class="vs-sub">${curPerson.name} · ${curTeam.name} vs ${opp.name} · ${vsSeason} · ${d.totalGames} juegos</div>
+      <div class="vs-sub">${curPerson.name} · ${curTeam.name} vs ${opp.name} · ${curVSSeason} · ${d.totalGames} juegos</div>
       <div class="stats-wrap">
         ${rows?`<table class="stats-table">
           <thead><tr><th>VIB</th><th>G</th><th>W</th><th>L</th><th>W%</th></tr></thead>
           <tbody>${rows}</tbody>
-        </table>`:`<div class="err">Sin enfrentamientos en ${curSeason}</div>`}
+        </table>`:`<div class="err">Sin enfrentamientos en ${curVSSeason}</div>`}
       </div>`;
   }catch(e){
     container.innerHTML=`<div class="err">Error: ${e.message}</div>`;
   }
-}
-
-function setVSSeason(s){
-  curVSSeason=s;
-  document.getElementById('vs-tab-2025').classList.toggle('on',s===2025);
-  document.getElementById('vs-tab-2026').classList.toggle('on',s===2026);
-  const oppId=document.getElementById('vs-select').value;
-  if(oppId) loadVS();
 }
 
 init();
