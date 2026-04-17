@@ -53,8 +53,9 @@ html,body{min-height:100vh;background:var(--ink);color:var(--tx);font-family:'DM
 .picks-loading{text-align:center;padding:30px;color:var(--mu);font-size:11px;font-family:'DM Mono',monospace}
 
 /* NAV TABS */
-.nav-tabs{display:flex;border-bottom:0.5px solid var(--br2);background:var(--s1)}
-.nav-tab{flex:1;padding:10px 4px;text-align:center;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:1px;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.nav-tabs{display:flex;border-bottom:0.5px solid var(--br2);background:var(--s1);overflow-x:auto;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex:1;min-width:70px;padding:10px 4px;text-align:center;font-size:9.5px;font-family:'DM Mono',monospace;letter-spacing:0.5px;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .nav-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
 
 /* TEAMS */
@@ -285,6 +286,71 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
 .toast.show{opacity:1;animation:toastIn .3s ease}
 @keyframes toastIn{from{transform:translate(-50%,10px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
 
+/* ─── LEAGUE SELECTION ─── */
+#s-leagues{padding:30px 20px 100px;min-height:100vh;flex-direction:column}
+#s-leagues.active{display:flex}
+.leagues-hero{text-align:center;padding:10px 0 30px}
+.leagues-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:4px;color:var(--gold-l);line-height:1}
+.leagues-title .ac{color:var(--ac)}
+.leagues-sub{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:2px;margin-top:10px}
+.leagues-date{font-size:11px;color:var(--gold);font-family:'DM Mono',monospace;margin-top:14px;padding:6px 14px;background:rgba(201,168,76,0.08);border:0.5px solid var(--br);border-radius:20px;display:inline-block}
+.leagues-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.league-card{aspect-ratio:1;background:var(--s2);border:1px solid var(--br2);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;position:relative;overflow:hidden;transition:all .3s}
+.league-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,0.03) 0%,transparent 60%);pointer-events:none}
+.league-card.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 8px 24px rgba(201,168,76,0.18)}
+.league-card.active:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--gold-l),0 10px 30px rgba(201,168,76,0.3)}
+.league-card.disabled{opacity:0.45;cursor:not-allowed}
+.league-card.disabled::after{content:'PRONTO';position:absolute;top:10px;right:10px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--mu);background:var(--ink);padding:2px 6px;border-radius:8px;border:0.5px solid var(--br2)}
+.league-logo{width:80px;height:80px;display:flex;align-items:center;justify-content:center}
+.league-logo img{width:100%;height:100%;object-fit:contain}
+.league-logo-fallback{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:2px;color:var(--gold)}
+.league-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--tx)}
+.league-card.active .league-name{color:var(--gold-l)}
+.league-card.active .league-logo-fallback{color:var(--gold-l)}
+.league-badge-live{position:absolute;top:12px;left:12px;font-size:8px;font-family:'DM Mono',monospace;color:var(--ac);letter-spacing:1px;background:rgba(79,195,161,0.12);padding:2px 6px;border-radius:8px;border:0.5px solid var(--ac);animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:0.75}50%{opacity:1}}
+.leagues-footer{margin-top:auto;text-align:center;padding-top:30px;font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:2px;line-height:1.8}
+.leagues-footer .br{color:var(--gold)}
+body:has(#s-leagues.active) .bottom-nav{display:none}
+#s-leagues{padding-bottom:30px}
+
+/* ─── ACCURACY BANNER ─── */
+.acc-banner{margin:0 12px 10px;background:linear-gradient(135deg,rgba(201,168,76,0.08) 0%,var(--s2) 60%);border:0.5px solid var(--br);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .2s}
+.acc-banner:hover{border-color:var(--gold)}
+.acc-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.acc-icon{font-size:18px}
+.acc-label{font-size:10px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:1.5px;flex:1}
+.acc-toggle{font-size:11px;color:var(--mu);font-family:'DM Mono',monospace}
+.acc-stats{display:flex;gap:10px}
+.acc-stat{flex:1;text-align:center;padding:8px;border-radius:8px;background:var(--s1)}
+.acc-stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.acc-stat-sub{font-size:9px;font-family:'DM Mono',monospace;color:var(--mu);margin-top:3px;letter-spacing:1px}
+.acc-stat.over .acc-stat-num{color:var(--win)}
+.acc-stat.under .acc-stat-num{color:var(--loss)}
+.acc-stat.total .acc-stat-num{color:var(--gold)}
+.acc-daily{margin-top:10px;padding-top:10px;border-top:0.5px solid var(--br2);display:none}
+.acc-banner.expanded .acc-daily{display:block}
+.acc-day-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:10px;font-family:'DM Mono',monospace;color:var(--mu)}
+.acc-day-row .day-date{min-width:70px}
+.acc-day-row .day-bar{flex:1;margin:0 10px;height:4px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;position:relative}
+.acc-day-row .day-bar .day-fill{height:100%;border-radius:4px}
+.acc-loading{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;text-align:center;padding:4px}
+
+/* ─── SOLAR/LUNAR SECTION ─── */
+.sl-section{padding:12px 16px}
+.sl-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:14px;border-radius:12px}
+.sl-header.solar{background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(251,191,36,0.03));border:0.5px solid rgba(251,191,36,0.3)}
+.sl-header.lunar{background:linear-gradient(135deg,rgba(91,143,232,0.1),rgba(91,143,232,0.03));border:0.5px solid rgba(91,143,232,0.3)}
+.sl-icon{font-size:36px;line-height:1}
+.sl-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px}
+.sl-title.solar{color:#FBBF24}
+.sl-title.lunar{color:#5B8FE8}
+.sl-sub{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px}
+.sl-count{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1}
+.sl-count.solar{color:#FBBF24}
+.sl-count.lunar{color:#5B8FE8}
+.sl-empty{text-align:center;padding:30px 16px;color:var(--mu);font-size:11px;font-family:'DM Mono',monospace}
+
 </style>
 </head>
 <body>
@@ -323,12 +389,47 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   </div>
 </div>
 
-<!-- S0: HOME - TOP PICKS -->
-<div class="screen active" id="s-home">
+<!-- S0: LEAGUE SELECTION -->
+<div class="screen active" id="s-leagues">
+  <div class="leagues-hero">
+    <div class="leagues-title">INFINITY <span class="ac">SCORES</span></div>
+    <div class="leagues-sub">LA ENERGÍA DEL NÚMERO · EL PODER DEL DEPORTE</div>
+    <div class="leagues-date" id="leagues-date"></div>
+  </div>
+  <div class="leagues-grid">
+    <div class="league-card active" onclick="selectLeague('mlb')">
+      <span class="league-badge-live">● LIVE</span>
+      <div class="league-logo"><img src="https://www.mlbstatic.com/team-logos/league-on-dark/1.svg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="league-logo-fallback" style="display:none">⚾</span></div>
+      <div class="league-name">MLB</div>
+    </div>
+    <div class="league-card disabled" onclick="selectLeague('nba')">
+      <div class="league-logo"><span class="league-logo-fallback">🏀</span></div>
+      <div class="league-name">NBA</div>
+    </div>
+    <div class="league-card disabled" onclick="selectLeague('nhl')">
+      <div class="league-logo"><span class="league-logo-fallback">🏒</span></div>
+      <div class="league-name">NHL</div>
+    </div>
+    <div class="league-card disabled" onclick="selectLeague('nfl')">
+      <div class="league-logo"><span class="league-logo-fallback">🏈</span></div>
+      <div class="league-name">NFL</div>
+    </div>
+  </div>
+  <div class="leagues-footer">
+    POWERED BY <span class="br">INFINITY NUMEROLOGY ENGINE</span><br>
+    MLB STATS API · 2025 HISTORICAL DATA
+  </div>
+</div>
+
+<!-- S1: HOME - TOP PICKS -->
+<div class="screen" id="s-home">
   <div class="home-vib" id="home-vib"></div>
+  <div id="acc-banner-wrap"></div>
   <div class="nav-tabs">
-    <div class="nav-tab on" onclick="showPicksSection('over',this)">🔥 TOP OVER</div>
-    <div class="nav-tab" onclick="showPicksSection('under',this)">🔻 TOP UNDER</div>
+    <div class="nav-tab on" data-section="over" onclick="showPicksSection('over',this)">🔥 OVER</div>
+    <div class="nav-tab" data-section="under" onclick="showPicksSection('under',this)">🔻 UNDER</div>
+    <div class="nav-tab" data-section="solar" onclick="showPicksSection('solar',this)" style="color:#FBBF24">☀️ SOLAR</div>
+    <div class="nav-tab" data-section="lunar" onclick="showPicksSection('lunar',this)" style="color:#5B8FE8">🌙 LUNAR</div>
     <div class="nav-tab" onclick="showTeams()">⚾ EQUIPOS</div>
   </div>
   <div id="picks-content"><div class="picks-loading">Calculando picks del día...</div></div>
@@ -598,10 +699,10 @@ let prevScreen='home'; // track where to go back from report
 // ── TOPBAR / NAV ──────────────────────────────────────────
 document.getElementById('back-btn').onclick=()=>{
   const cur=document.querySelector('.screen.active').id;
-  if(cur==='s-teams'){show('home');return;}
+  if(cur==='s-home'){show('leagues');return;}
+  else if(cur==='s-teams'){show('home');return;}
   else if(cur==='s-team'){show('teams');return;}
   else if(cur==='s-report'||cur==='s-vs'){
-    // If came from picks, go back to home; if from team, go back to team
     if(prevScreen==='picks'){show('home');return;}
     else{show('team');return;}
   }
@@ -612,7 +713,7 @@ function show(id, from=null){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s-'+id).classList.add('active');
   const bb=document.getElementById('back-btn');
-  (id==='home')?bb.classList.remove('show'):bb.classList.add('show');
+  (id==='leagues')?bb.classList.remove('show'):bb.classList.add('show');
   window.scrollTo(0,0);
 }
 
@@ -623,6 +724,10 @@ async function init(){
   document.getElementById('topbar-vib').textContent=uv;
   document.getElementById('topbar-vib').style.color=VC[uv];
   document.getElementById('topbar-date').textContent=fmtLong(t);
+
+  // League selection date badge
+  const lDate=document.getElementById('leagues-date');
+  if(lDate)lDate.innerHTML=`🗓 ${fmtLong(t)} · VIB. UNIVERSAL <span style="color:${VC[uv]};font-family:'Bebas Neue',sans-serif;font-size:16px;margin-left:4px">${uv}</span>`;
 
   // Home vib header
   document.getElementById('home-vib').innerHTML=`
@@ -635,25 +740,32 @@ async function init(){
       </div>
     </div>`;
 
-  // Load teams and picks in parallel
-  const [teamsData] = await Promise.all([
-    fetch(`${API}/teams`).then(r=>r.json()).catch(()=>[]),
-  ]);
-  allTeams=teamsData;
-  renderTeams();
-  const uv2=vibDay(today());
-  document.getElementById('teams-vib-txt').textContent=`${uv2} · ${VM[uv2]}`;
-  document.getElementById('teams-vib-txt').style.color=VC[uv2];
+  // Load teams in background (used by team detail later)
+  fetch(`${API}/teams`).then(r=>r.json()).then(d=>{
+    allTeams=d;
+    renderTeams();
+    const uv2=vibDay(today());
+    const el=document.getElementById('teams-vib-txt');
+    if(el){el.textContent=`${uv2} · ${VM[uv2]}`;el.style.color=VC[uv2];}
+  }).catch(()=>{});
 
-  // Load picks async
-  loadTopPicks();
-
-  // Hide splash after a minimum dramatic delay (2s) - don't block UI
+  // Hide splash after 2.2s - reveals league selection
   setTimeout(()=>{
     const sp=document.getElementById('splash');
     if(sp)sp.classList.add('hide');
     setTimeout(()=>sp&&sp.remove(),800);
   },2200);
+}
+
+// ── LEAGUE SELECTION ──────────────────────────────────────
+function selectLeague(league){
+  if(league!=='mlb'){showToast(`${league.toUpperCase()} · PRONTO`);return;}
+  prevScreen='leagues';
+  show('home','leagues');
+  // Load picks + accuracy (only on first MLB entry)
+  loadTopPicks();
+  loadAccuracy();
+  loadSolarLunar();
 }
 
 // ── TOP PICKS (uses backend /api/today) ──────────────────
@@ -713,11 +825,188 @@ async function loadTopPicks(){
   }
 }
 
+// ── SOLAR / LUNAR (vibración 1 y 9) ──────────────────────
+let cachedSolar=null, cachedLunar=null;
+async function loadSolarLunar(){
+  if(cachedSolar&&cachedLunar)return;
+  try{
+    const r=await fetch(`${API}/players`);
+    const players=await r.json();
+    const t=today();
+    const solar=[],lunar=[];
+    players.forEach(p=>{
+      if(!p.birth_date)return;
+      const v=vib(p.birth_date,t);
+      const item={...p,vibToday:v,destinyNumber:p.destiny_number||dest(p.birth_date)};
+      if(v===1)solar.push(item);
+      else if(v===9)lunar.push(item);
+    });
+    // Enrich with team info
+    const teamMap={};allTeams.forEach(t=>teamMap[t.id]=t);
+    solar.forEach(p=>{const t=teamMap[p.team_id];p.teamName=t?.name||p.team_id;p.abbr=t?.abbr;p.colors=t?.colors;});
+    lunar.forEach(p=>{const t=teamMap[p.team_id];p.teamName=t?.name||p.team_id;p.abbr=t?.abbr;p.colors=t?.colors;});
+    // Sort by team name
+    solar.sort((a,b)=>(a.teamName||'').localeCompare(b.teamName||''));
+    lunar.sort((a,b)=>(a.teamName||'').localeCompare(b.teamName||''));
+    cachedSolar=solar;
+    cachedLunar=lunar;
+  }catch(e){
+    console.error('solar/lunar error',e);
+  }
+}
+
+function renderSolarLunar(kind){
+  const isSolar=kind==='solar';
+  const list=isSolar?cachedSolar:cachedLunar;
+  if(!list){
+    document.getElementById('picks-content').innerHTML='<div class="picks-loading">Cargando jugadores…</div>';
+    loadSolarLunar().then(()=>renderSolarLunar(kind));
+    return;
+  }
+  const icon=isSolar?'☀️':'🌙';
+  const title=isSolar?'VIBRACIÓN SOLAR':'VIBRACIÓN LUNAR';
+  const subtitle=isSolar?'Liderazgo · Inicio · Energía Solar (Vib 1)':'Sabiduría · Cierre · Energía Lunar (Vib 9)';
+  const color=isSolar?'#FBBF24':'#5B8FE8';
+  const bgColor=isSolar?'rgba(251,191,36,0.1)':'rgba(91,143,232,0.1)';
+
+  if(!list.length){
+    document.getElementById('picks-content').innerHTML=`
+      <div class="sl-section">
+        <div class="sl-header ${kind}">
+          <div class="sl-icon">${icon}</div>
+          <div><div class="sl-title ${kind}">${title}</div><div class="sl-sub">${subtitle}</div></div>
+          <div class="sl-count ${kind}">0</div>
+        </div>
+        <div class="sl-empty">Ningún jugador tiene esta vibración hoy</div>
+      </div>`;
+    return;
+  }
+
+  const html=`<div class="sl-section">
+    <div class="sl-header ${kind}">
+      <div class="sl-icon">${icon}</div>
+      <div style="flex:1"><div class="sl-title ${kind}">${title}</div><div class="sl-sub">${subtitle}</div></div>
+      <div class="sl-count ${kind}">${list.length}</div>
+    </div>
+    <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;padding:0 2px 8px">${list.length} JUGADORES CON ${icon} VIB ${isSolar?'1':'9'} HOY — LAS VIBRACIONES MÁS PODEROSAS</div>
+    ${list.map(p=>{
+      const pd=p.destinyNumber;
+      return`<div class="player-row" onclick='handleSolarLunarClick(${JSON.stringify(p).replace(/'/g,"&apos;")})' style="margin:0 0 7px">
+        ${photoEl(p.mlb_id,pd,42,null,ini(p.name))}
+        <div style="flex:1;min-width:0">
+          <div class="pl-name">${p.name}</div>
+          <div class="pl-meta">${p.position||'—'} · ${p.teamName||''} · Destino <span style="color:${VC[pd]};font-family:'Bebas Neue',sans-serif;font-size:12px">${pd}</span></div>
+        </div>
+        <div class="vib-badge" style="background:${bgColor};color:${color};border:1px solid ${color}44">${p.vibToday}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+  document.getElementById('picks-content').innerHTML=html;
+}
+
+async function handleSolarLunarClick(p){
+  curTeam=allTeams.find(t=>t.id===p.team_id);
+  if(!curTeam){showToast('Cargando equipo…');return;}
+  prevScreen='picks';
+  openReport({id:p.id,name:p.name,position:p.position,birth_date:p.birth_date,mlb_id:p.mlb_id,destiny_number:p.destinyNumber,team_id:p.team_id},false,today());
+}
+
+// ── ACCURACY BANNER (real hit-rate from backend) ──────────
+async function loadAccuracy(){
+  const wrap=document.getElementById('acc-banner-wrap');
+  if(!wrap)return;
+  wrap.innerHTML=`<div class="acc-banner" id="acc-banner">
+    <div class="acc-header">
+      <div class="acc-icon">📊</div>
+      <div class="acc-label">ACIERTOS · ÚLTIMOS 7 DÍAS</div>
+      <div class="acc-toggle acc-loading">CARGANDO…</div>
+    </div>
+  </div>`;
+  try{
+    // Use shorter window (3 days) for faster initial load
+    const r=await fetch(`${API}/accuracy?days=3`);
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    renderAccuracy(d);
+  }catch(e){
+    wrap.innerHTML=`<div class="acc-banner">
+      <div class="acc-header">
+        <div class="acc-icon">📊</div>
+        <div class="acc-label" style="color:var(--mu)">ACIERTOS · PRÓXIMAMENTE</div>
+      </div>
+      <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace">Histórico disponible en 24h, tras recoger resultados reales</div>
+    </div>`;
+  }
+}
+
+function renderAccuracy(d){
+  const wrap=document.getElementById('acc-banner-wrap');
+  const agg=d.aggregate||{};
+  const overAcc=agg.overAccuracy;
+  const underAcc=agg.underAccuracy;
+  const total=agg.overallAccuracy;
+  const totalHits=(agg.overHits||0)+(agg.underHits||0);
+  const totalPicks=(agg.overTotal||0)+(agg.underTotal||0);
+
+  if(totalPicks===0){
+    wrap.innerHTML=`<div class="acc-banner">
+      <div class="acc-header">
+        <div class="acc-icon">📊</div>
+        <div class="acc-label" style="color:var(--mu)">ACIERTOS · SIN DATOS AÚN</div>
+      </div>
+      <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace">Se calculará mañana tras los juegos de hoy</div>
+    </div>`;
+    return;
+  }
+
+  wrap.innerHTML=`<div class="acc-banner" id="acc-banner" onclick="toggleAccDetails()">
+    <div class="acc-header">
+      <div class="acc-icon">📊</div>
+      <div class="acc-label">ACIERTOS REALES · ${d.days} DÍAS</div>
+      <div class="acc-toggle">▼</div>
+    </div>
+    <div class="acc-stats">
+      <div class="acc-stat over">
+        <div class="acc-stat-num">${overAcc!==null?overAcc+'%':'—'}</div>
+        <div class="acc-stat-sub">OVER ${agg.overHits||0}/${agg.overTotal||0}</div>
+      </div>
+      <div class="acc-stat under">
+        <div class="acc-stat-num">${underAcc!==null?underAcc+'%':'—'}</div>
+        <div class="acc-stat-sub">UNDER ${agg.underHits||0}/${agg.underTotal||0}</div>
+      </div>
+      <div class="acc-stat total">
+        <div class="acc-stat-num">${total!==null?total+'%':'—'}</div>
+        <div class="acc-stat-sub">TOTAL ${totalHits}/${totalPicks}</div>
+      </div>
+    </div>
+    <div class="acc-daily">
+      ${(d.daily||[]).map(day=>{
+        const acc=day.overTotal+day.underTotal>0?Math.round((day.overHits+day.underHits)/(day.overTotal+day.underTotal)*100):null;
+        const col=acc===null?'var(--mu)':acc>=50?'var(--win)':'var(--loss)';
+        return`<div class="acc-day-row">
+          <span class="day-date">${day.date.slice(5)}</span>
+          <span class="day-bar"><span class="day-fill" style="width:${acc||0}%;background:${col}"></span></span>
+          <span style="color:${col};min-width:60px;text-align:right">${acc!==null?acc+'%':'—'} · ${day.overHits+day.underHits}/${day.overTotal+day.underTotal}</span>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function toggleAccDetails(){
+  const b=document.getElementById('acc-banner');
+  if(b)b.classList.toggle('expanded');
+}
+
 function showPicksSection(section,el){
   currentPicksSection=section;
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
-  if(cachedPicks)renderPicks(cachedPicks,section);
+  if(section==='solar'||section==='lunar'){
+    renderSolarLunar(section);
+  }else if(cachedPicks){
+    renderPicks(cachedPicks,section);
+  }
 }
 
 function renderPicks(results,section){
@@ -1281,13 +1570,16 @@ function showToast(msg){
 function navClick(screen,el){
   document.querySelectorAll('.bn-item').forEach(i=>i.classList.remove('on'));
   el.classList.add('on');
-  if(screen==='home')show('home');
+  if(screen==='home')show('leagues');
 }
 function navSport(sport,el){
-  // MLB tab opens teams list
+  // MLB tab opens home (picks view)
   document.querySelectorAll('.bn-item').forEach(i=>i.classList.remove('on'));
   el.classList.add('on');
-  showTeams();
+  show('home','leagues');
+  if(!cachedPicks)loadTopPicks();
+  loadAccuracy();
+  loadSolarLunar();
 }
 function navSoon(name,el){
   showToast(`${name} · PRONTO`);
@@ -1297,8 +1589,8 @@ function syncBottomNav(){
   const cur=document.querySelector('.screen.active')?.id;
   const items=document.querySelectorAll('.bn-item[data-screen],.bn-item[data-sport]');
   items.forEach(i=>i.classList.remove('on'));
-  if(cur==='s-home')document.querySelector('.bn-item[data-screen="home"]')?.classList.add('on');
-  else if(cur==='s-teams'||cur==='s-team'||cur==='s-report'||cur==='s-vs'){
+  if(cur==='s-leagues')document.querySelector('.bn-item[data-screen="home"]')?.classList.add('on');
+  else if(cur==='s-home'||cur==='s-teams'||cur==='s-team'||cur==='s-report'||cur==='s-vs'){
     document.querySelector('.bn-item[data-sport="mlb"]')?.classList.add('on');
   }
 }
