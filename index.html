@@ -251,6 +251,40 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
 @keyframes shimmerHot{0%,100%{box-shadow:0 0 0 rgba(34,197,94,0)}50%{box-shadow:0 0 10px rgba(34,197,94,0.4)}}
 @keyframes shimmerCold{0%,100%{box-shadow:0 0 0 rgba(168,85,247,0)}50%{box-shadow:0 0 10px rgba(168,85,247,0.4)}}
 
+/* ─── SPARKLINES ─── */
+.spark-wrap{display:block;width:100%;position:relative}
+.spark-wrap svg{display:block;width:100%;height:100%;overflow:visible}
+.spark-line{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.spark-area{opacity:0.18}
+.spark-dot{stroke:var(--ink);stroke-width:1}
+.spark-dot.today{stroke-width:1.5;filter:drop-shadow(0 0 6px currentColor)}
+.spark-label{font-family:'DM Mono',monospace;font-size:8px;fill:var(--mu)}
+
+/* ─── CONFIDENCE PILL ─── */
+.conf-pill{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:20px;background:rgba(201,168,76,0.1);border:0.5px solid rgba(201,168,76,0.25);color:var(--gold);letter-spacing:0.5px;white-space:nowrap}
+.conf-pill .cp-num{font-family:'Bebas Neue',sans-serif;font-size:12px;line-height:1;color:var(--gold-l)}
+.conf-high{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3);color:var(--win)}
+.conf-high .cp-num{color:var(--win)}
+.conf-low{background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3);color:var(--loss)}
+.conf-low .cp-num{color:var(--loss)}
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,12,20,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:0.5px solid var(--br2);display:flex;z-index:50;padding:8px 4px 10px;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;cursor:pointer;color:var(--mu);transition:all .15s;position:relative;border-radius:8px}
+.bn-item:active{background:rgba(255,255,255,0.03)}
+.bn-item.on{color:var(--ac)}
+.bn-item.on::before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:var(--ac);border-radius:0 0 2px 2px}
+.bn-item.soon{color:#3a404c;cursor:default}
+.bn-icon{font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;width:22px;height:22px}
+.bn-label{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:0.5px;line-height:1}
+.bn-dot{position:absolute;top:3px;right:15px;width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold)}
+.screen{padding-bottom:70px}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--s3);color:var(--tx);padding:10px 18px;border-radius:20px;font-size:12px;font-family:'DM Mono',monospace;letter-spacing:1px;border:0.5px solid var(--br);box-shadow:0 4px 20px rgba(0,0,0,0.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.show{opacity:1;animation:toastIn .3s ease}
+@keyframes toastIn{from{transform:translate(-50%,10px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+
 </style>
 </head>
 <body>
@@ -369,6 +403,31 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bn-item on" data-screen="home" onclick="navClick('home',this)">
+    <div class="bn-icon">⌂</div><div class="bn-label">HOME</div>
+  </div>
+  <div class="bn-item" data-sport="mlb" onclick="navSport('mlb',this)">
+    <div class="bn-icon">⚾</div><div class="bn-label">MLB</div><div class="bn-dot" id="bn-mlb-dot"></div>
+  </div>
+  <div class="bn-item soon" onclick="navSoon('NBA',this)">
+    <div class="bn-icon">🏀</div><div class="bn-label">NBA</div>
+  </div>
+  <div class="bn-item soon" onclick="navSoon('NHL',this)">
+    <div class="bn-icon">🏒</div><div class="bn-label">NHL</div>
+  </div>
+  <div class="bn-item soon" onclick="navSoon('NFL',this)">
+    <div class="bn-icon">🏈</div><div class="bn-label">NFL</div>
+  </div>
+  <div class="bn-item soon" onclick="navSoon('PERFIL',this)">
+    <div class="bn-icon">◉</div><div class="bn-label">PERFIL</div>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
 const API='https://infinity-sport-backend-production.up.railway.app/api';
 const VC={1:'#E05C5C',2:'#E8874A',3:'#D4A017',4:'#4FC3A1',5:'#5B8FE8',6:'#C084FC',7:'#34D399',8:'#F87171',9:'#FBBF24'};
@@ -410,6 +469,80 @@ function logoEl(mlbId,bg,tx,abbr,size=44){
       onerror="this.style.display='none';this.nextSibling.style.display='flex'">
     <span style="display:none;font-family:'Bebas Neue',sans-serif;font-size:${Math.round(size*.27)}px;color:${tx};align-items:center;justify-content:center;width:100%;height:100%">${abbr}</span>
   </div>`;
+}
+
+// ── CONFIDENCE CALCULATION ─────────────────────────────────
+// Confidence based on: sample size (games in vib), score magnitude, and total historical games
+function calcConfidence(gamesInVib, score, totalGames){
+  const sampleScore = Math.min(gamesInVib/12, 1) * 45;   // up to 45pts for 12+ games in vib
+  const magScore    = Math.min(Math.abs(score)/80, 1) * 35; // up to 35pts if score is extreme (±80%)
+  const histScore   = Math.min(totalGames/60, 1) * 20;   // up to 20pts for 60+ total games
+  return Math.max(35, Math.min(95, Math.round(sampleScore + magScore + histScore)));
+}
+
+// ── SPARKLINE RENDERER ─────────────────────────────────────
+// Renders a 9-point mini line chart (one value per vibration 1-9)
+// values: array of 9 numeric values (or null for missing)
+// todayIdx: 1-9 which vibration to highlight
+// color: stroke color, width/height in px
+function sparklineSVG(values, todayIdx, color, width, height){
+  const pad=3, n=9;
+  const valid=values.map(v=>v==null||isNaN(v)?null:v);
+  const real=valid.filter(v=>v!=null);
+  if(real.length<2)return'';
+  const mx=Math.max(...real), mn=Math.min(...real);
+  const range=mx-mn||1;
+  const xStep=(width-pad*2)/(n-1);
+  const pts=valid.map((v,i)=>{
+    if(v==null)return null;
+    const x=pad+i*xStep;
+    const y=pad+(height-pad*2)*(1-(v-mn)/range);
+    return{x,y,v};
+  });
+  // build polyline path skipping nulls
+  let d='';
+  pts.forEach((p,i)=>{
+    if(!p)return;
+    d+=(d?' L ':'M ')+p.x.toFixed(1)+' '+p.y.toFixed(1);
+  });
+  // area fill
+  const last=pts.filter(p=>p).slice(-1)[0];
+  const first=pts.filter(p=>p)[0];
+  const area=d+` L ${last.x.toFixed(1)} ${height-pad} L ${first.x.toFixed(1)} ${height-pad} Z`;
+  // dots
+  const dots=pts.map((p,i)=>{
+    if(!p)return'';
+    const isToday=(i+1)===todayIdx;
+    const r=isToday?3.2:1.8;
+    const fill=isToday?color:'rgba(255,255,255,0.4)';
+    return`<circle class="spark-dot ${isToday?'today':''}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${fill}" style="color:${color}"/>`;
+  }).join('');
+  return`<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+    <path class="spark-area" d="${area}" fill="${color}"/>
+    <path class="spark-line" d="${d}" stroke="${color}"/>
+    ${dots}
+  </svg>`;
+}
+
+// Build sparkline values from stats{vib:{G,H,...}}
+function sparkValues(stats, isPitcher){
+  const vals=[];
+  for(let v=1;v<=9;v++){
+    const s=stats&&stats[v];
+    if(!s||s.G<1){vals.push(null);continue;}
+    if(isPitcher){
+      const wl=s.W+s.L;
+      vals.push(wl>0?s.W/wl*100:null);
+    }else{
+      vals.push(s.G>0?s.H/s.G:null);
+    }
+  }
+  return vals;
+}
+
+// Total games across all vibrations
+function totalSt(stats){
+  let g=0;for(let v=1;v<=9;v++)g+=(stats&&stats[v]?.G)||0;return g;
 }
 
 // ── PREDICTION ENGINE ─────────────────────────────────────
@@ -556,6 +689,9 @@ async function loadTopPicks(){
         level:isOver?'high':'low',
         label:isOver?'HIGH PERFORMANCE':'LOW PERFORMANCE',
         pct:p.score,
+        gamesInVib:p.gamesInVib,
+        totalGames:p.totalGames,
+        confidence:calcConfidence(p.gamesInVib||0,p.score||0,p.totalGames||0),
         player:{
           id:p.id,name:p.name,position:p.position,
           birth_date:full.birth_date,
@@ -606,13 +742,15 @@ function renderPicks(results,section){
       const pctStr=p.pct>=0?`+${p.pct}%`:`${p.pct}%`;
       const pctColor=isOver?'var(--win)':'var(--loss)';
       const ring=isOver?'hot':'cold';
+      const confCls=isOver?'conf-high':'conf-low';
       return`<div class="pick-card ${isOver?'hot':'cold'}" onclick='openTeamThenPlayer("${p.teamId}",${JSON.stringify(p.player)})'>
         ${photoEl(p.player.mlb_id,p.destinyNumber,44,ring,ini(p.name))}
         <div style="flex:1;min-width:0">
           <div class="pick-name">${p.name}</div>
           <div class="pick-team">${p.teamName} · ${p.position}</div>
-          <div style="margin-top:4px;font-size:10px;color:var(--mu);font-family:'DM Mono',monospace">
-            Vib. activa: <span style="color:${VC[p.vibToday]};font-family:'Bebas Neue',sans-serif;font-size:14px">${p.vibToday}</span>
+          <div style="margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace">Vib: <span style="color:${VC[p.vibToday]};font-family:'Bebas Neue',sans-serif;font-size:14px">${p.vibToday}</span></span>
+            <span class="conf-pill ${confCls}">CONF <span class="cp-num">${p.confidence}%</span></span>
           </div>
         </div>
         <div class="pick-right">
@@ -881,14 +1019,14 @@ function openReport(person,isManager,date){
     </div>`;
 
   document.querySelectorAll('.stab[data-s]').forEach(t=>{
-    t.classList.toggle('on',t.dataset.s==='2026');
+    t.classList.toggle('on',t.dataset.s==='2025');
     t.onclick=()=>{
       document.querySelectorAll('.stab[data-s]').forEach(x=>x.classList.remove('on'));
       t.classList.add('on');curSeason=parseInt(t.dataset.s);
       loadReport(person,isManager,curSeason,reportDate);
     };
   });
-  loadReport(person,isManager,2026,reportDate);
+  loadReport(person,isManager,2025,reportDate);
   if(prevScreen!=='picks') prevScreen='team';
   show('report');
 }
@@ -933,15 +1071,42 @@ async function loadReport(person,isManager,season,date){
       stats=d.stats;
       const pred=calcPrediction(stats,todayVib,isPitcher);
 
+      // Confidence based on games in vib today + score magnitude + total games
+      const todaySt=stats[todayVib]||{G:0};
+      let totalG=0;
+      for(let v=1;v<=9;v++)totalG+=(stats[v]?.G||0);
+      const hasData=pred.label!=='SIN DATOS'&&pred.label!=='POCOS DATOS';
+      const conf=hasData?calcConfidence(todaySt.G||0, pred.pct||0, totalG):0;
+
+      // Sparkline values across vibrations
+      const sparkVals=sparkValues(stats,isPitcher);
+      const sparkColor=pred.level==='high'?'#22c55e':pred.level==='low'?'#a855f7':'#C9A84C';
+      const hasSpark=sparkVals.filter(v=>v!=null).length>=3;
+      const spark=hasSpark?sparklineSVG(sparkVals,todayVib,sparkColor,120,36):'';
+      const confCls=pred.level==='high'?'conf-high':pred.level==='low'?'conf-low':'';
+
       // Prediction box in header
       const predHTML=`<div class="pred-box ${pred.level}">
         <div class="pred-icon">${pred.level==='high'?'🔥':pred.level==='low'?'🔻':'⚖️'}</div>
-        <div>
-          <div class="pred-text" style="color:${pred.level==='high'?'var(--win)':pred.level==='low'?'var(--loss)':'var(--mu)'}">${pred.label}</div>
-          <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:2px">vs promedio histórico</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span class="pred-text" style="color:${pred.level==='high'?'var(--win)':pred.level==='low'?'var(--loss)':'var(--mu)'}">${pred.label}</span>
+            ${hasData?`<span class="conf-pill ${confCls}">CONF <span class="cp-num">${conf}%</span></span>`:''}
+          </div>
+          <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:3px">vs promedio histórico · ${totalG} juegos</div>
         </div>
         ${Math.abs(pred.pct)>0?`<div class="pred-pct" style="color:${pred.level==='high'?'var(--win)':'var(--loss)'}">${pred.pct>=0?'+':''}${pred.pct}%</div>`:''}
-      </div>`;
+      </div>
+      ${spark?`<div style="margin-top:10px;padding:10px 12px;background:var(--s2);border:0.5px solid var(--br2);border-radius:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px">TENDENCIA POR VIBRACIÓN 1–9</span>
+          <span style="font-size:9px;color:${sparkColor};font-family:'DM Mono',monospace">HOY · V${todayVib}</span>
+        </div>
+        <div class="spark-wrap" style="height:36px">${spark}</div>
+        <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:4px;padding:0 2px">
+          ${[1,2,3,4,5,6,7,8,9].map(v=>`<span style="color:${v===todayVib?sparkColor:'var(--mu)'};font-weight:${v===todayVib?'700':'400'}">${v}</span>`).join('')}
+        </div>
+      </div>`:''}`;
 
       // Add pred box to header
       document.getElementById('report-hdr').innerHTML+=predHTML;
@@ -1103,6 +1268,43 @@ function showTeams(){
   show('teams','home');
   renderTeams();
 }
+
+// ── BOTTOM NAV ────────────────────────────────────────────
+let toastT=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  if(toastT)clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),1800);
+}
+function navClick(screen,el){
+  document.querySelectorAll('.bn-item').forEach(i=>i.classList.remove('on'));
+  el.classList.add('on');
+  if(screen==='home')show('home');
+}
+function navSport(sport,el){
+  // MLB tab opens teams list
+  document.querySelectorAll('.bn-item').forEach(i=>i.classList.remove('on'));
+  el.classList.add('on');
+  showTeams();
+}
+function navSoon(name,el){
+  showToast(`${name} · PRONTO`);
+}
+// Keep bottom nav highlighted based on current screen
+function syncBottomNav(){
+  const cur=document.querySelector('.screen.active')?.id;
+  const items=document.querySelectorAll('.bn-item[data-screen],.bn-item[data-sport]');
+  items.forEach(i=>i.classList.remove('on'));
+  if(cur==='s-home')document.querySelector('.bn-item[data-screen="home"]')?.classList.add('on');
+  else if(cur==='s-teams'||cur==='s-team'||cur==='s-report'||cur==='s-vs'){
+    document.querySelector('.bn-item[data-sport="mlb"]')?.classList.add('on');
+  }
+}
+// Hook into show() to sync nav
+const _origShow=show;
+show=function(id,from){_origShow(id,from);syncBottomNav();};
 
 init();
 </script>
