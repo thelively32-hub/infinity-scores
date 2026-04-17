@@ -225,7 +225,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
   <div class="nav-tabs">
     <div class="nav-tab on" onclick="showPicksSection('over',this)">🔥 TOP OVER</div>
     <div class="nav-tab" onclick="showPicksSection('under',this)">🔻 TOP UNDER</div>
-    <div class="nav-tab" onclick="show('teams')">⚾ EQUIPOS</div>
+    <div class="nav-tab" onclick="showTeams()">⚾ EQUIPOS</div>
   </div>
   <div id="picks-content"><div class="picks-loading">Calculando picks del día...</div></div>
 </div>
@@ -375,7 +375,7 @@ let currentPicksSection='over';
 // ── TOPBAR / NAV ──────────────────────────────────────────
 document.getElementById('back-btn').onclick=()=>{
   const cur=document.querySelector('.screen.active').id;
-  if(cur==='s-teams')show('home');
+  if(cur==='s-teams'){show('home');return;}
   else if(cur==='s-team')show('teams');
   else if(cur==='s-report'||cur==='s-vs')show('team');
 };
@@ -424,34 +424,39 @@ async function init(){
 // ── TOP PICKS ─────────────────────────────────────────────
 async function loadTopPicks(){
   if(cachedPicks){renderPicks(cachedPicks,currentPicksSection);return;}
-  document.getElementById('picks-content').innerHTML='<div class="picks-loading">Calculando picks del día…<br><small style="opacity:.5">Esto puede tomar ~30 segundos</small></div>';
+  document.getElementById('picks-content').innerHTML='<div class="picks-loading">Calculando picks del día…<br><small style="opacity:.5">Analizando 150 jugadores…</small></div>';
+  if(!allTeams.length){setTimeout(loadTopPicks,1000);return;}
 
-  const uv=vibDay(today());
   const results=[];
 
-  // Process all teams' players
-  for(const team of allTeams){
-    try{
-      const pRes=await fetch(`${API}/players?teamId=${team.id}`);
-      const players=await pRes.json();
-      for(const p of players){
-        try{
-          const vibToday=vib(p.birth_date,today());
-          const isPitcher=['SP','RP','P'].includes(p.position||'');
-          const aRes=await fetch(`${API}/analysis/player?playerId=${p.id}&season=2025`);
-          const aData=await aRes.json();
-          if(aData.error||!aData.stats)continue;
-          const pred=calcPrediction(aData.stats,vibToday,isPitcher);
-          if(pred.label==='SIN DATOS'||pred.label==='POCOS DATOS')continue;
-          results.push({
-            id:p.id, name:p.name, position:p.position,
-            teamId:team.id, teamName:team.name, abbr:team.abbr,
-            colors:team.colors, destinyNumber:p.destiny_number||dest(p.birth_date),
-            vibToday, isPitcher, ...pred, player:p, team,
-          });
-        }catch(e){}
-      }
-    }catch(e){}
+  // Process teams in parallel batches of 5
+  const batches=[];
+  for(let i=0;i<allTeams.length;i+=5) batches.push(allTeams.slice(i,i+5));
+
+  for(const batch of batches){
+    await Promise.all(batch.map(async team=>{
+      try{
+        const pRes=await fetch(`${API}/players?teamId=${team.id}`);
+        const players=await pRes.json();
+        await Promise.all(players.map(async p=>{
+          try{
+            const vibToday=vib(p.birth_date,today());
+            const isPitcher=['SP','RP','P'].includes(p.position||'');
+            const aRes=await fetch(`${API}/analysis/player?playerId=${p.id}&season=2025`);
+            const aData=await aRes.json();
+            if(aData.error||!aData.stats)return;
+            const pred=calcPrediction(aData.stats,vibToday,isPitcher);
+            if(pred.label==='SIN DATOS'||pred.label==='POCOS DATOS')return;
+            results.push({
+              id:p.id, name:p.name, position:p.position,
+              teamId:team.id, teamName:team.name, abbr:team.abbr,
+              colors:team.colors, destinyNumber:p.destiny_number||dest(p.birth_date),
+              vibToday, isPitcher, ...pred, player:p, team,
+            });
+          }catch(e){}
+        }));
+      }catch(e){}
+    }));
   }
 
   cachedPicks=results;
@@ -974,6 +979,12 @@ async function loadVS(){
   }catch(e){
     container.innerHTML=`<div class="err">Error: ${e.message}</div>`;
   }
+}
+
+function showTeams(){
+  show('teams');
+  document.getElementById('back-btn').classList.add('show');
+  renderTeams();
 }
 
 init();
