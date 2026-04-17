@@ -206,7 +206,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold)!important}
     <div style="font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">EXPLORAR OTRAS VIBRACIONES</div>
     <div class="vib-tabs-wrap" id="vib-tabs"></div>
   </div>
-  <div id="vib-detail"></div>
+  
 
   <div class="sec-label">MANAGER</div>
   <div id="mgr-card"></div>
@@ -458,8 +458,6 @@ function renderTeamVibSection(teamId){
     tabs.appendChild(btn);
   }
 
-  // Show today's detail
-  renderVibDetail(todayV);
 }
 
 function renderTodayVibCard(v){
