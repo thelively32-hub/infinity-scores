@@ -411,12 +411,23 @@ async function openTeam(id){
   }
 }
 
+let teamVibStats2025=null;
+let teamVibStats2026=null;
+
 async function loadTeamVibStats(teamId){
   try{
-    const r=await fetch(`${API}/analysis/manager?teamId=${teamId}&season=2025`);
-    const data=await r.json();
-    if(data.error)throw new Error(data.error);
-    teamVibStats=data.stats;
+    const [r25,r26]=await Promise.all([
+      fetch(`${API}/analysis/manager?teamId=${teamId}&season=2025`),
+      fetch(`${API}/analysis/manager?teamId=${teamId}&season=2026`)
+    ]);
+    const d25=await r25.json();
+    const d26=await r26.json();
+    teamVibStats=d25.stats||{};
+    teamVibStats2025=d25.stats||{};
+    teamVibStats2026=d26.stats||{};
+    for(let v=1;v<=9;v++){
+      if(!teamVibStats2026[v])teamVibStats2026[v]={G:0,W:0,L:0};
+    }
     renderTeamVibSection(teamId);
   }catch(e){
     document.getElementById('today-vib-card').innerHTML=`<div style="color:var(--mu);font-size:11px;font-family:'DM Mono',monospace">Sin datos históricos disponibles</div>`;
@@ -452,10 +463,35 @@ function renderTeamVibSection(teamId){
 }
 
 function renderTodayVibCard(v){
-  const st=teamVibStats[v]||{G:0,W:0,L:0};
-  const pct=st.G>0?Math.round(st.W/st.G*100):0;
-  const isGood=pct>=55;
+  const st25=teamVibStats2025[v]||{G:0,W:0,L:0};
+  const st26=teamVibStats2026[v]||{G:0,W:0,L:0};
+  const pct25=st25.G>0?Math.round(st25.W/st25.G*100):0;
+  const pct26=st26.G>0?Math.round(st26.W/st26.G*100):0;
   const card=document.getElementById('today-vib-card');
+
+  function vibCardHTML(st, pct, year, isLive){
+    const isGood=pct>=55;
+    const livePill=isLive?'<span style="background:rgba(79,195,161,0.15);color:var(--ac);font-size:9px;font-family:DM Mono,monospace;padding:2px 7px;border-radius:20px;border:0.5px solid var(--ac);margin-left:6px">LIVE</span>':''
+    return `<div style="margin-bottom:${isLive?'0':'10px'};padding-bottom:${isLive?'0':'10px'};border-bottom:${isLive?'none':'0.5px solid var(--br2)'}">
+      <div style="font-size:9px;color:var(--mu);font-family:DM Mono,monospace;letter-spacing:1px;margin-bottom:6px">TEMPORADA ${year}${livePill}</div>
+      ${st.G>0?`
+      <div class="tvc-record">
+        <span class="tvc-wl" style="color:var(--win)">${st.W}W</span>
+        <span style="color:var(--mu);font-family:DM Mono,monospace;font-size:14px"> — </span>
+        <span class="tvc-wl" style="color:var(--loss)">${st.L}L</span>
+        <span class="tvc-pct">· ${st.G} juegos</span>
+      </div>
+      <div class="win-bar-wrap" style="margin:6px 0 4px">
+        <div class="win-bar-fill" style="width:${pct}%;background:${isGood?'var(--win)':'var(--loss)'}"></div>
+      </div>
+      <div class="win-bar-label">
+        <span style="color:var(--win)">WIN ${pct}%</span>
+        <span style="color:var(--loss)">LOSS ${100-pct}%</span>
+      </div>`
+      :`<div style="color:var(--mu);font-size:11px;font-family:DM Mono,monospace;padding:4px 0">No games yet · Sin juegos aún</div>`}
+    </div>`;
+  }
+
   card.innerHTML=`
     <div class="tvc-top">
       <div class="tvc-num" style="color:${VC[v]}">${v}</div>
@@ -464,22 +500,10 @@ function renderTodayVibCard(v){
         <div class="tvc-meaning" style="color:${VC[v]}">${VM[v]}</div>
       </div>
     </div>
-    ${st.G>0?`
-    <div class="tvc-record">
-      <span class="tvc-wl" style="color:var(--win)">${st.W}W</span>
-      <span style="color:var(--mu);font-family:'DM Mono',monospace;font-size:14px">—</span>
-      <span class="tvc-wl" style="color:var(--loss)">${st.L}L</span>
-      <span class="tvc-pct">· ${st.G} juegos</span>
-    </div>
-    <div class="win-bar-wrap">
-      <div class="win-bar-fill" style="width:${pct}%;background:${isGood?'var(--win)':'var(--loss)'}"></div>
-    </div>
-    <div class="win-bar-label">
-      <span style="color:var(--win)">WIN ${pct}%</span>
-      <span style="color:var(--loss)">LOSS ${100-pct}%</span>
-    </div>
-    `:`<div style="color:var(--mu);font-size:11px;font-family:'DM Mono',monospace">Sin juegos en esta vibración aún</div>`}`;
+    ${vibCardHTML(st25,pct25,2025,false)}
+    ${vibCardHTML(st26,pct26,2026,true)}`;
 }
+
 
 function renderVibDetail(v){
   const st=teamVibStats[v]||{G:0,W:0,L:0};
